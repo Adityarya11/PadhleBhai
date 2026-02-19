@@ -175,10 +175,4 @@ if __name__ == "__main__":
     # Step 3: Create .nojekyll to allow folders starting with underscore
     with open(".nojekyll", "w") as f: pass
     
-    print("\n✅ READY! Run these commands now:")
-    print("   git init")
-    print("   git add .")
-    print("   git commit -m 'Fresh start'")
-    print("   git branch -M main")
-    print("   git remote add origin <YOUR_REPO_URL>")
-    print("   git push -u origin main")
+    
