@@ -1,4 +1,5 @@
 import os
+import subprocess
 import urllib.parse
 import html
 
@@ -6,6 +7,11 @@ import html
 ROOT_DIR = "."
 OUTPUT_FILE = "index.html"
 GITHUB_LIMIT_MB = 100  # Max file size allowed by GitHub (Standard)
+
+# GitHub repo info — used to generate media.githubusercontent.com download links for LFS files
+GITHUB_OWNER = "Adityarya11"
+GITHUB_REPO = "PadhleBhai"
+GITHUB_BRANCH = "main"
 
 # Standard Ignore List
 IGNORE_DIRS = {'.git', '.github', '.vscode', '__pycache__', 'node_modules', 'venv', 'bin', 'obj'}
@@ -43,8 +49,8 @@ html_foot = """
     </div>
     <script>
         function viewOnline(relativePath) {
-            const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '').replace(/\/$/, '') + '/';
-            const cleanPath = relativePath.replace(/^\\.\\//, '');
+            const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '').replace(/\\/$/, '') + '/';
+            const cleanPath = relativePath.replace(/^\\.\\//,'');
             const fullUrl = baseUrl + cleanPath;
             const viewerUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(fullUrl);
             window.open(viewerUrl, '_blank');
@@ -58,8 +64,24 @@ def get_file_icon(ext):
     icons = {'.pdf':'📕', '.pptx':'📊', '.docx':'📝', '.jpg':'🖼️', '.png':'🖼️', '.zip':'📦', '.py':'💻'}
     return icons.get(ext, '📄')
 
+def get_lfs_files():
+    """Returns a set of relative paths for files currently tracked by Git LFS."""
+    try:
+        result = subprocess.run(
+            ['git', 'lfs', 'ls-files', '--name-only'],
+            capture_output=True, text=True, cwd=ROOT_DIR
+        )
+        return {line.strip() for line in result.stdout.splitlines() if line.strip()}
+    except Exception:
+        return set()
+
+def get_lfs_download_url(web_path):
+    """Returns a media.githubusercontent.com URL for an LFS file so the actual content is served."""
+    return f"https://media.githubusercontent.com/media/{GITHUB_OWNER}/{GITHUB_REPO}/{GITHUB_BRANCH}/{web_path}"
+
 def check_large_files():
-    """Finds files > 100MB and adds them to .gitignore"""
+    """Finds files > 100MB that are NOT in LFS and adds them to .gitignore"""
+    lfs_files = get_lfs_files()
     large_files = []
     print("🔍 Scanning for large files (>100MB)...")
     
@@ -70,9 +92,12 @@ def check_large_files():
             try:
                 size_mb = os.path.getsize(filepath) / (1024 * 1024)
                 if size_mb > GITHUB_LIMIT_MB:
-                    rel_path = os.path.relpath(filepath, ROOT_DIR)
-                    large_files.append(rel_path)
-                    print(f"   ❌ Too big ({size_mb:.1f}MB): {rel_path}")
+                    rel_path = os.path.relpath(filepath, ROOT_DIR).replace(os.sep, '/')
+                    if rel_path in lfs_files:
+                        print(f"   ✅ In LFS ({size_mb:.1f}MB): {rel_path}")
+                    else:
+                        large_files.append(rel_path)
+                        print(f"   ❌ Too big ({size_mb:.1f}MB): {rel_path}")
             except OSError:
                 pass
                 
@@ -82,9 +107,11 @@ def check_large_files():
                 f.write(f"\n{lf}")
         print(f"⚠️  Added {len(large_files)} large files to .gitignore (They will NOT be uploaded).")
     else:
-        print("✅ No large files found.")
+        print("✅ No oversized files outside LFS.")
 
-def build_tree_html(current_path):
+def build_tree_html(current_path, lfs_files=None):
+    if lfs_files is None:
+        lfs_files = get_lfs_files()
     html_output = "<ul>"
     
     try:
@@ -95,36 +122,39 @@ def build_tree_html(current_path):
                 if entry.name in IGNORE_FILES or entry.name in IGNORE_DIRS or entry.name.startswith('.'): continue
                 
                 if entry.is_dir():
-                    html_output += f"""<li><details><summary>📁 {html.escape(entry.name)}</summary>{build_tree_html(entry.path)}</details></li>"""
+                    html_output += f"""<li><details><summary>📁 {html.escape(entry.name)}</summary>{build_tree_html(entry.path, lfs_files)}</details></li>"""
                 
                 elif entry.is_file():
                     ext = os.path.splitext(entry.name)[1].lower()
                     
                     # 1. Path Calculation
-                    rel_path = os.path.relpath(entry.path, ROOT_DIR)
-                    clean_path = rel_path.replace(os.sep, '/') # Web uses forward slash
-                    web_path = urllib.parse.quote(clean_path)   # Encodes spaces/symbols
+                    rel_path = os.path.relpath(entry.path, ROOT_DIR).replace(os.sep, '/')
+                    web_path = urllib.parse.quote(rel_path)   # Encodes spaces/symbols
                     
                     icon = get_file_icon(ext)
                     
-                    # 2. Check if file exceeds GitHub's size limit (kept in LFS, not viewable on Pages)
+                    # 2. Check if file is tracked by LFS or exceeds GitHub's size limit
                     try:
                         size_mb = os.path.getsize(entry.path) / (1024 * 1024)
                     except OSError:
                         size_mb = 0
-                    is_lfs = size_mb > GITHUB_LIMIT_MB
+                    is_lfs = (rel_path in lfs_files) or (size_mb > GITHUB_LIMIT_MB)
                     
                     # 3. Buttons
-                    view_btn = ""
+                    # For LFS files, use media.githubusercontent.com so the actual file is served
                     if is_lfs:
                         view_btn = '<span class="btn" style="background-color:#6c3; cursor:default;" title="File too large for online preview">⚠ LFS</span>'
-                    elif ext in ['.pdf', '.jpg', '.png', '.txt', '.py', '.cpp', '.c']:
-                        view_btn = f'<a href="{web_path}" target="_blank" class="btn btn-view">View</a>'
-                    elif ext in ['.pptx', '.docx', '.xlsx']:
-                        view_btn = f'<a href="#" onclick="viewOnline(\'{web_path}\'); return false;" class="btn btn-view">View Online</a>'
-                    
+                        dl_url = get_lfs_download_url(web_path)
+                    else:
+                        view_btn = ""
+                        if ext in ['.pdf', '.jpg', '.png', '.txt', '.py', '.cpp', '.c']:
+                            view_btn = f'<a href="{web_path}" target="_blank" class="btn btn-view">View</a>'
+                        elif ext in ['.pptx', '.docx', '.xlsx']:
+                            view_btn = f'<a href="#" onclick="viewOnline(\'{web_path}\'); return false;" class="btn btn-view">View Online</a>'
+                        dl_url = web_path
+
                     html_output += f"""
-                    <li><div class="file-row"><span>{icon} </span><span class="file-name">{html.escape(entry.name)}</span>{view_btn}<a href="{web_path}" download class="btn btn-dl">⬇</a></div></li>
+                    <li><div class="file-row"><span>{icon} </span><span class="file-name">{html.escape(entry.name)}</span>{view_btn}<a href="{dl_url}" download class="btn btn-dl">⬇</a></div></li>
                     """
 
     except PermissionError: pass
@@ -138,8 +168,9 @@ if __name__ == "__main__":
 
     # Step 2: Generate Site
     print("🚀 Generating index.html...")
+    lfs_files = get_lfs_files()
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write(html_head + build_tree_html(ROOT_DIR) + html_foot)
+        f.write(html_head + build_tree_html(ROOT_DIR, lfs_files) + html_foot)
     
     # Step 3: Create .nojekyll to allow folders starting with underscore
     with open(".nojekyll", "w") as f: pass

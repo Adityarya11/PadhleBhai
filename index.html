@@ -483,11 +483,11 @@
                     </ul></details></li>
                     <li><div class="file-row"><span>📕 </span><span class="file-name">5th sem mid sem pyq.pdf</span><a href="5thSem/5th%20sem%20mid%20sem%20pyq.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/5th%20sem%20mid%20sem%20pyq.pdf" download class="btn btn-dl">⬇</a></div></li>
                     </ul></details></li><li><details><summary>📁 6thSem</summary><ul><li><details><summary>📁 CN</summary><ul><li><details><summary>📁 Notes</summary><ul>
-                    <li><div class="file-row"><span>📕 </span><span class="file-name">CN Part 1.pdf</span><span class="btn" style="background-color:#6c3; cursor:default;" title="File too large for online preview">⚠ LFS</span><a href="6thSem/CN/Notes/CN%20Part%201.pdf" download class="btn btn-dl">⬇</a></div></li>
+                    <li><div class="file-row"><span>📕 </span><span class="file-name">CN Part 1.pdf</span><span class="btn" style="background-color:#6c3; cursor:default;" title="File too large for online preview">⚠ LFS</span><a href="https://media.githubusercontent.com/media/Adityarya11/PadhleBhai/main/6thSem/CN/Notes/CN%20Part%201.pdf" download class="btn btn-dl">⬇</a></div></li>
                     
-                    <li><div class="file-row"><span>📕 </span><span class="file-name">CN Part 2.pdf</span><a href="6thSem/CN/Notes/CN%20Part%202.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/CN/Notes/CN%20Part%202.pdf" download class="btn btn-dl">⬇</a></div></li>
+                    <li><div class="file-row"><span>📕 </span><span class="file-name">CN Part 2.pdf</span><span class="btn" style="background-color:#6c3; cursor:default;" title="File too large for online preview">⚠ LFS</span><a href="https://media.githubusercontent.com/media/Adityarya11/PadhleBhai/main/6thSem/CN/Notes/CN%20Part%202.pdf" download class="btn btn-dl">⬇</a></div></li>
                     
-                    <li><div class="file-row"><span>📕 </span><span class="file-name">CN Part 3.pdf</span><span class="btn" style="background-color:#6c3; cursor:default;" title="File too large for online preview">⚠ LFS</span><a href="6thSem/CN/Notes/CN%20Part%203.pdf" download class="btn btn-dl">⬇</a></div></li>
+                    <li><div class="file-row"><span>📕 </span><span class="file-name">CN Part 3.pdf</span><span class="btn" style="background-color:#6c3; cursor:default;" title="File too large for online preview">⚠ LFS</span><a href="https://media.githubusercontent.com/media/Adityarya11/PadhleBhai/main/6thSem/CN/Notes/CN%20Part%203.pdf" download class="btn btn-dl">⬇</a></div></li>
                     </ul></details></li>
                     <li><div class="file-row"><span>📕 </span><span class="file-name">CIDR.pdf</span><a href="6thSem/CN/CIDR.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/CN/CIDR.pdf" download class="btn btn-dl">⬇</a></div></li>
                     
@@ -526,7 +526,7 @@
                     <li><div class="file-row"><span>📄 </span><span class="file-name">q1.cpp</span><a href="6thSem/CompilerDesign/q1.cpp" target="_blank" class="btn btn-view">View</a><a href="6thSem/CompilerDesign/q1.cpp" download class="btn btn-dl">⬇</a></div></li>
                     
                     <li><div class="file-row"><span>📄 </span><span class="file-name">q1.exe</span><a href="6thSem/CompilerDesign/q1.exe" download class="btn btn-dl">⬇</a></div></li>
-                    </ul></details></li><li><details><summary>📁 DataMining</summary><ul><li><details><summary>📁 LAB3</summary><ul></ul></details></li>
+                    </ul></details></li><li><details><summary>📁 DataMining</summary><ul>
                     <li><div class="file-row"><span>📕 </span><span class="file-name">1_Introduction to Data Mining.pdf</span><a href="6thSem/DataMining/1_Introduction%20to%20Data%20Mining.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/DataMining/1_Introduction%20to%20Data%20Mining.pdf" download class="btn btn-dl">⬇</a></div></li>
                     
                     <li><div class="file-row"><span>📕 </span><span class="file-name">2_Data Similarity &amp; Quality Assessment.pdf</span><a href="6thSem/DataMining/2_Data%20Similarity%20%26%20Quality%20Assessment.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/DataMining/2_Data%20Similarity%20%26%20Quality%20Assessment.pdf" download class="btn btn-dl">⬇</a></div></li>
@@ -647,7 +647,7 @@
     <script>
         function viewOnline(relativePath) {
             const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '').replace(/\/$/, '') + '/';
-            const cleanPath = relativePath.replace(/^\.\//, '');
+            const cleanPath = relativePath.replace(/^\.\//,'');
             const fullUrl = baseUrl + cleanPath;
             const viewerUrl = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(fullUrl);
             window.open(viewerUrl, '_blank');
