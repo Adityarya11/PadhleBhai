@@ -1,0 +1,141 @@
+****************************************************************
+TABLE CREATION
+****************************************************************
+CREATE TABLE aggrtable (A INT, B INT);
+
+INSERT INTO aggrtable VALUES(1, NULL);
+INSERT INTO aggrtable VALUES(2, NULL);
+INSERT INTO aggrtable VALUES(3, NULL);
+INSERT INTO aggrtable VALUES(4, NULL);
+INSERT INTO aggrtable VALUES(NULL, NULL);
+INSERT INTO aggrtable VALUES(1, NULL);
+INSERT INTO aggrtable VALUES(2, NULL);
+---------------
+| A    | B    |
+---------------
+| 1    | NULL |
+| 2    | NULL |
+| 3    | NULL |
+| 4    | NULL |
+| NULL | NULL |
+| 1    | NULL |
+| 2    | NULL |
+---------------
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+COUNT
+****************************************************************
+SELECT COUNT(*) FROM aggrtable;   
+SELECT COUNT(ALL *) FROM aggrtable;
+7
+
+SELECT COUNT(DISTINCT *) from aggrtable; This syntax is not correct we need to specifically tell the colums where distinct rows are needed.
+Invalid
+
+
+SELECT COUNT(A) FROM aggrtable;
+SELECT COUNT(ALL A) FROM aggrtable;
+6
+SELECT COUNT(DISTINCT A) FROM aggrtable;
+4
+
+
+SELECT COUNT(B) FROM aggrtable;
+SELECT COUNT(ALL B) FROM aggrtable;
+SELECT COUNT(DISTINCT B) FROM aggrtable;
+0
+
+
+COUNT(*) counts all rows (including those with NULL values), 
+COUNT(column_name) counts non-NULL values in a specific column, and
+COUNT(DISTINCT column_name) counts distinct non-NULL values.
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+SUM
+****************************************************************
+SELECT SUM(A) FROM aggrtable;
+SELECT SUM(ALL A) FROM aggrtable;
+13
+SELECT SUM(DISTINCT A) FROM aggrtable;
+10
+
+SELECT SUM(B) FROM aggrtable;
+SELECT SUM(ALL B) FROM aggrtable;
+SELECT SUM(DISTINCT B) FROM aggrtable;
+NULL
+
+SUM: The SUM function returns the total sum of a numeric column.
+SUM(column_name) adds up non-NULL values in a specific column, and 
+SUM(DISTINCT column_name) adds up distinct non-NULL values.
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+AVG
+****************************************************************
+SELECT AVG(A) FROM aggrtable;
+SELECT AVG(ALL A) FROM aggrtable;
+2.1667   (=13/6)
+
+SELECT AVG(DISTINCT A) FROM aggrtable;
+2.5000   (=10/4)
+
+SELECT AVG(B) FROM aggrtable;
+SELECT AVG(ALL B) FROM aggrtable;
+SELECT AVG(DISTINCT B) FROM aggrtable;
+NULL
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+MAX
+****************************************************************
+SELECT MAX(A) FROM aggrtable;
+SELECT MAX(ALL A) FROM aggrtable;
+SELECT MAX(DISTINCT A) FROM aggrtable;
+4
+
+SELECT MAX(B) FROM aggrtable;
+SELECT MAX(ALL B) FROM aggrtable;
+SELECT MAX(DISTINCT B) FROM aggrtable;
+NULL
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+MIN
+****************************************************************
+SELECT MIN(A) FROM aggrtable;
+SELECT MIN(ALL A) FROM aggrtable;
+SELECT MIN(DISTINCT A) FROM aggrtable;
+1
+
+SELECT MIN(B) FROM aggrtable;
+SELECT MIN(ALL B) FROM aggrtable;
+SELECT MIN(DISTINCT B) FROM aggrtable;
+NULL
+
+MIN: The MIN function returns the smallest value of the selected column. 
+MIN(column_name) finds the minimum non-NULL value in a specific column, and 
+MIN(DISTINCT column_name) finds the minimum distinct non-NULL value.
+****************************************************************
+****************************************************************

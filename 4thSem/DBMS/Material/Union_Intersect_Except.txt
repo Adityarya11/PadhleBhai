@@ -1,0 +1,136 @@
+CREATE TABLE tab1(data VARCHAR(10));
+CREATE TABLE tab2(data VARCHAR(10));
+
+INSERT INTO tab1 VALUES('A');
+INSERT INTO tab1 VALUES('A');
+INSERT INTO tab1 VALUES('A');
+INSERT INTO tab1 VALUES('B');
+INSERT INTO tab1 VALUES('B');
+INSERT INTO tab1 VALUES('C');
+INSERT INTO tab1 VALUES('D');
+INSERT INTO tab1 VALUES('D');
+
+
+SELECT * FROM tab1;
+----
+data|
+----
+A   |
+A   |
+A   |
+B   |
+B   |
+C   |
+D   |
+D   | 
+----
+
+INSERT INTO tab2 VALUES('A');
+INSERT INTO tab2 VALUES('A');
+INSERT INTO tab2 VALUES('B');
+INSERT INTO tab2 VALUES('C');
+
+SELECT * FROM tab2;
+-----
+data|
+-----
+A   |
+A   |
+B   |
+C   |
+-----
+
+
+
+**************************************************************************************************************************
+**************************************************************************************************************************
+The 'UNION' operation automatically eliminates duplicates, unlike the 'SELECT' clause.
+(SELECT * FROM tab1) UNION (SELECT * FROM tab2);
+------
+|data|
+------
+A    |
+B    |
+C    |
+D    |
+------
+
+If we want to retain all duplicates, we must write 'UNION ALL' in place of 'UNION'.
+(SELECT * FROM tab1) UNION ALL (SELECT * FROM tab2);
+------
+|data|
+------
+A    |
+A    |
+A    |
+B    |  
+B    |
+C    |
+D    |
+D    |
+A    |
+A    |
+B 	 |
+C    |
+------
+**************************************************************************************************************************
+**************************************************************************************************************************
+
+
+
+
+**************************************************************************************************************************
+**************************************************************************************************************************
+The 'EXCEPT' operation outputs all tuples from its first input that do not occur in the second input. 
+It performs set difference. 
+The operation automatically eliminates duplicates in the inputs before performing set difference.
+
+(SELECT * FROM tab1) EXCEPT (SELECT * FROM tab2);
+------
+|data|
+------
+|D   |
+------
+
+If we want to retain duplicates, we must write 'EXCEPT ALL' in place of 'EXCEPT'.
+(SELECT * FROM tab1) EXCEPT ALL (SELECT * FROM tab2);
+------
+|data|
+------
+|A   |
+|B   |
+|D   |
+|D   |
+------
+**************************************************************************************************************************
+**************************************************************************************************************************
+
+
+
+
+**************************************************************************************************************************
+**************************************************************************************************************************
+The 'INTERSECT' operation automatically eliminates duplicates.
+(SELECT * FROM tab1) INTERSECT (SELECT * FROM tab2);
+------
+|data|
+------
+A    |
+B    |
+C    |
+------
+
+
+If we want to retain all duplicates, we must write 'INTERSECT ALL' in place of 'INTERSECT'.
+(SELECT * FROM tab1) INTERSECT ALL (SELECT * FROM tab2);
+------
+|data|
+------
+A    |
+A    |
+B    |
+C    | 
+------
+**************************************************************************************************************************
+**************************************************************************************************************************
+

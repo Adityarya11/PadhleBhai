@@ -1,0 +1,310 @@
+DELIMITER //
+CREATE PROCEDURE get_instructor()
+BEGIN
+	SELECT * FROM instructor;
+END //
+DELIMITER ;
+
+CALL get_instructor
+OR 
+CALL get_instructor()
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor1()
+BEGIN
+	DECLARE ctn INT DEFAULT 0;
+    SELECT COUNT(*) INTO ctn FROM instructor;
+    SELECT ctn;
+END //
+DELIMITER ;
+*************************************************OR************************************
+DELIMITER //
+CREATE PROCEDURE get_instructor1()
+BEGIN
+	DECLARE ctn INT DEFAULT 0;
+    SELECT COUNT(*) FROM instructor;
+END //
+DELIMITER ;
+
+CALL get_instructor1
+OR
+CALL get_instructor1()
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor2()
+BEGIN
+	DECLARE ctn INT DEFAULT 0;
+    SELECT COUNT(*) INTO ctn FROM instructor;
+END //
+DELIMITER ;
+
+CALL get_instructor2
+OR
+CALL get_instructor2()
+In this case, procedure will execute. However, nothing will be shown.
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor_salary(IN salary INT)
+BEGIN
+	SELECT * FROM instructor WHERE instructor.salary > salary;
+END //
+DELIMITER ;
+
+CALL get_instructor_salary(10)
+CALL get_instructor_salary((SELECT MIN(salary) FROM instructor))
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor_count(OUT notuples INT)
+BEGIN
+	SELECT COUNT(*) INTO notuples FROM instructor;
+END //
+DELIMITER ;
+
+CALL get_instructor_count(@notuples);
+SELECT @notuples as totl_Records;
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor_count_salary(OUT notuples INT, IN salary INT)
+BEGIN
+	SELECT COUNT(*) INTO notuples FROM instructor WHERE instructor.salary > salary;
+END //
+DELIMITER ;
+
+CALL get_instructor_count_salary(@notuples, 1);
+SELECT @notuples as totl_Records;
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor_department_count(OUT notuplesI INT, OUT notuplesD INT)
+BEGIN
+	SELECT COUNT(*) INTO notuplesI FROM instructor;
+    SELECT COUNT(*) INTO notuplesD FROM department;
+END //
+DELIMITER ;
+
+CALL get_instructor_department_count(@notuplesI, @notuplesD);
+SELECT @notuplesI AS rows_instructor, @notuplesD AS rows_department;
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE set_counter(INOUT counter INT, IN inc INT)
+BEGIN
+	SET counter = counter + inc;
+END //
+DELIMITER ;
+
+SET @cntr = 1;
+CALL set_counter(@cntr,1); -- 2
+CALL set_counter(@cntr,1); -- 3
+CALL set_counter(@cntr,5); -- 8
+SELECT @cntr; -- 8
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor_salary_status1(
+    IN  name VARCHAR(20), 
+    OUT salarystatus VARCHAR(20))
+BEGIN
+    DECLARE sal INT DEFAULT 0;
+
+    SELECT salary INTO sal FROM instructor WHERE instructor.name = name;
+
+    IF sal > 20 THEN
+        SET salarystatus = 'OK';
+    END IF;
+END //
+DELIMITER ;
+
+CALL get_instructor_salary_status1('XYZ1', @status);
+SELECT @status;
+Output = NULL
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor_salary_status2(
+    IN  name VARCHAR(20), 
+    OUT salarystatus VARCHAR(20))
+BEGIN
+    DECLARE sal INT DEFAULT 0;
+
+    SELECT salary INTO sal FROM instructor WHERE instructor.name = name;
+
+	IF sal > 30 THEN
+        SET salarystatus = 'OK';
+    ELSE
+        SET salarystatus = 'NOT OK';
+    END IF;
+	
+END //
+DELIMITER ;
+
+CALL get_instructor_salary_status2('XYZ1', @status);
+SELECT @status;
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor_salary_status3(
+    IN  name VARCHAR(20), 
+    OUT salarystatus VARCHAR(20))
+BEGIN
+    DECLARE sal INT DEFAULT 0;
+
+    SELECT salary INTO sal FROM instructor WHERE instructor.name = name;
+
+	IF sal < 20 THEN
+        SET salarystatus = 'OK';
+    ELSEIF sal >= 20 AND sal < 40 THEN
+        SET salarystatus = 'BETTER';
+	ELSE
+        SET salarystatus = 'BEST';
+    END IF;
+	
+END //
+DELIMITER ;
+
+CALL get_instructor_salary_status3('XYZ1', @status);
+SELECT @status;
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor_salary_status_case(
+    IN  name VARCHAR(20), 
+    OUT salarystatus VARCHAR(20))
+BEGIN
+    DECLARE sal INT DEFAULT 0;
+
+    SELECT salary INTO sal FROM instructor WHERE instructor.name = name;
+
+	CASE sal
+		WHEN 10 THEN 
+			SET salarystatus = 'OK';
+		WHEN 20 THEN 
+			SET salarystatus = 'BETTER';
+		ELSE
+			SET salarystatus = 'BEST';
+    END CASE;
+	
+END //
+DELIMITER ;
+
+CALL get_instructor_salary_status_case('XYZ1', @status);
+SELECT @status;
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_instructor_salary_status_case1(
+    IN  name VARCHAR(20), 
+    OUT salarystatus VARCHAR(20))
+BEGIN
+    DECLARE sal INT DEFAULT 0;
+
+    SELECT salary INTO sal FROM instructor WHERE instructor.name = name;
+
+	CASE 
+		WHEN sal = 10 THEN 
+			SET salarystatus = 'OK';
+		WHEN sal = 20 THEN 
+			SET salarystatus = 'BETTER';
+		ELSE
+			SET salarystatus = 'BEST';
+    END CASE;
+	
+END //
+DELIMITER ;
+
+CALL get_instructor_salary_status_case1('XYZ1', @status);
+SELECT @status;
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE LoopDemo()
+BEGIN
+	DECLARE x INT;
+	DECLARE str VARCHAR(255);
+	SET x = 1;
+	SET str = '';
+  
+	loop_label: LOOP
+		IF  x > 10 THEN 
+			LEAVE loop_label;
+		END IF;
+            
+		SET x = x + 1;
+		IF (x mod 2) THEN
+			ITERATE loop_label;
+		ELSE
+			SET str = CONCAT(str,x,',');
+		END  IF;
+	END LOOP;
+	SELECT str;
+END //
+DELIMITER ;
+
+CALL LoopDemo();
+2,4,6,8,10,
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE WhileLoopDemo()
+BEGIN
+    DECLARE x INT;
+	DECLARE str VARCHAR(255);
+	SET x = 1;
+	SET str = '';
+
+    WHILE x <= 10 DO
+        SET x = x + 1;
+        SET str = CONCAT(str,x,',');
+    END WHILE;
+	SELECT str;
+END //
+DELIMITER ;
+
+CALL WhileLoopDemo();
+2,3,4,5,6,7,8,9,10,11,
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE RepeatLoopDemo()
+BEGIN
+    DECLARE x INT;
+	DECLARE str VARCHAR(255);
+	SET x = 1;
+	SET str = '';
+    
+    REPEAT
+        SET str = CONCAT(str,x,',');
+        SET x = x + 1;
+    UNTIL x >= 10
+    END REPEAT;
+    SELECT str;
+END //
+DELIMITER ;
+
+CALL RepeatLoopDemo();
+1,2,3,4,5,6,7,8,9,
+------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE set_counter1(OUT counter INT)
+BEGIN
+	SELECT counter;
+	SET counter = counter*2;
+END //
+DELIMITER ;
+
+SET @cntr = 1000;
+CALL set_counter1(@cntr); 
+
+NULL will be printed.
+------------------------------------------------------------------------------------------------
+SHOW PROCEDURE STATUS;
+SHOW PROCEDURE STATUS WHERE db = 'dbms2023';
+------------------------------------------------------------------------------------------------
+DROP PROCEDURE [IF EXISTS] stored_procedure_name;
+------------------------------------------------------------------------------------------------
+Fortunately, MySQL does not have any statement that allows you to directly modify the parameters and body of the stored procedure.
+
+To make such changes, you must drop ad re-create the stored procedure using the DROP PROCEDURE and CREATE PROCEDURE statements.
+------------------------------------------------------------------------------------------------
+Following content is taken from https://dev.mysql.com/doc/refman/8.0/en/create-procedure.html ...
+
+An IN parameter passes a value into a procedure. The procedure might modify the value, but the modification is not visible to the caller when the procedure returns. An OUT parameter passes a value from the procedure back to the caller. Its initial value is NULL within the procedure, and its value is visible to the caller when the procedure returns. An INOUT parameter is initialized by the caller, can be modified by the procedure, and any change made by the procedure is visible to the caller when the procedure returns.
+------------------------------------------------------------------------------------------------
+Can MySQL 5.6 stored routines return result sets?
+
+Stored procedures can, but stored functions cannot. If you perform an ordinary SELECT inside a stored procedure, the result set is returned directly to the client. You need to use the MySQL 4.1 (or higher) client/server protocol for this to work. This means that, for example, in PHP, you need to use the mysqli extension rather than the old mysql extension.
+
+https://dev.mysql.com/doc/refman/5.6/en/faqs-stored-procs.html
+
+
+

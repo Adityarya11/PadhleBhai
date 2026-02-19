@@ -1,0 +1,26 @@
+CREATE DATABASE rgipt;
+USE rgipt;
+
+CREATE TABLE t3 (
+    department_name VARCHAR(20) PRIMARY KEY
+);
+-------------------------------------------------------
+CREATE TABLE t2 (
+    dept_name VARCHAR(20) PRIMARY KEY,
+    salary INT,
+    FOREIGN KEY (dept_name) REFERENCES t3(department_name)
+);
+-------------------------------------------------------
+CREATE TABLE t1 (
+	id INT PRIMARY KEY,
+    d_name VARCHAR(20),
+    FOREIGN KEY (d_name) REFERENCES t2(dept_name)
+);
+-------------------------------------------------------
+INSERT INTO t3 VALUES ('CSE');
+INSERT INTO t3 VALUES ('ECE');
+-------------------------------------------------------
+INSERT INTO t2 VALUES ('CSE', 10);
+INSERT INTO t2 VALUES ('ECE', 20);
+INSERT INTO t2 VALUES ('CSE', 10);   Duplicate entry 'CSE' for key 't2.PRIMARY'
+INSERT INTO t2 VALUES ('EE', 10); 	 Cannot add or update a child row: a foreign key constraint fails

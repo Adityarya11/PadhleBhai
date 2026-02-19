@@ -1,0 +1,28 @@
+DELIMITER //
+CREATE TRIGGER before_instructor_insert BEFORE INSERT ON instructor 
+FOR EACH ROW
+BEGIN
+    DECLARE dept_count INT;
+    SELECT COUNT(dept_name) INTO dept_count FROM department WHERE dept_name = NEW.dept_name;
+    IF dept_count <> 1 THEN
+        INSERT INTO department VALUES(NEW.dept_name, NULL, NULL);
+    END IF; 
+END //
+DELIMITER ;
+
+INSERT INTO instructor VALUES(9, 'DEF1', 'CIVIL', 900);
+---------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE TRIGGER after_instructor_insert AFTER INSERT ON instructor 
+FOR EACH ROW
+BEGIN
+    DECLARE dept_count INT;
+    SELECT COUNT(dept_name) INTO dept_count FROM department WHERE dept_name = NEW.dept_name;
+    IF dept_count <> 1 THEN
+         INSERT INTO department VALUES(NEW.dept_name, NULL, NULL);
+    END IF; 
+END //
+DELIMITER ;
+
+INSERT INTO instructor VALUES(10, 'DEF2', 'BIO', 1000);
+

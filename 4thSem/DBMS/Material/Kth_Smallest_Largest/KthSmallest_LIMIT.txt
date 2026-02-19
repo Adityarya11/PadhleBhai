@@ -1,0 +1,63 @@
+CREATE TABLE t(id INT)
+
+INSERT INTO t VALUES(1)
+INSERT INTO t VALUES(1)
+INSERT INTO t VALUES(2)
+INSERT INTO t VALUES(2)
+INSERT INTO t VALUES(2)
+INSERT INTO t VALUES(3)
+INSERT INTO t VALUES(4)
+INSERT INTO t VALUES(4)
+INSERT INTO t VALUES(5)
+
+SELECT * from t
+------
+| id |
+------
+| 1  |
+| 1  |
+| 2  |
+| 2  |
+| 2  |
+| 3  |
+| 4  |
+| 4  |
+| 5  |
+------
+
+Query: Find the smallest. [Here 0,1, means skip first 0 row and print next 1 row]
+SELECT id FROM t ORDER BY id LIMIT 0,1
+
+Query: Find the largest.
+SELECT id FROM t4 ORDER BY DESC id LIMIT 0,1
+
+Query: Find the second smallest. 
+(As id is not DISTINCT so we have used DISTINCT. If we ignore DISTINCT before id then we get 1)
+SELECT DISTINCT id FROM t ORDER BY id LIMIT 1,1 [Here 1,1, means skip first 1 row and print next 1 row]
+
+SELECT id from t order by id LIMIT 5
+------
+| id |
+------
+| 1  |
+| 1  |
+| 2  |
+| 2  |
+| 2  |
+------
+
+SELECT id from t order by id DESC LIMIT 5
+------
+| id |
+------
+| 5  |
+| 4  |
+| 4  |
+| 3  |
+| 2  |
+------
+
+
+
+
+

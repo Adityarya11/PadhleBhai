@@ -1,0 +1,90 @@
+CREATE TABLE instructor (id INT, name VARCHAR(20), dept_name VARCHAR(20), salary INT)
+
+INSERT INTO instructor VALUES (1, 'XYZ1', 'CSE', 100);
+INSERT INTO instructor VALUES (2, 'XYZ2', 'CSE', 200);
+INSERT INTO instructor VALUES (3, 'ABC1', 'CSE', 300);
+INSERT INTO instructor VALUES (4, 'ABC2', 'CSE', 400);
+INSERT INTO instructor VALUES (5, 'PQR1', 'ECE', 500);
+INSERT INTO instructor VALUES (6, 'PQR2', 'ECE', 600);
+INSERT INTO instructor VALUES (7, 'LMN1', 'ECE', 700);
+INSERT INTO instructor VALUES (8, 'LMN2', 'ECE', 800);
+
+Create a view 'view_dept' from 'instructor' table where the name of the department is CSE
+CREATE VIEW view_dept AS (SELECT * FROM instructor WHERE dept_name='CSE')
+
+Create a view 'view_name' from 'view_dept' view where the name of the instructor starts from XYZ
+CREATE VIEW view_name AS (SELECT * FROM view_dept WHERE name LIKE 'XYZ%')
+
+Create a view 'view_salary' from 'view_name' view where the salary of the instructor is more than 50
+CREATE VIEW view_salary AS (SELECT * FROM view_name WHERE salary > 50)
+
+Find the information of the instructor who work in CSE department, his/her name starts from XYZ and his/salary is more than 50.
+SELECT * FROM view_salary
+
+This same query can be also written as follows using AS clause.
+SELECT * FROM (
+	SELECT * FROM (
+		SELECT * FROM (
+			SELECT * FROM instructor WHERE dept_name='CSE'
+		) AS view_dept WHERE name LIKE 'XYZ%'
+	) AS view_name WHERE salary > 50
+) AS view_salary
+
+
+SELECT * FROM (
+	SELECT * FROM (
+		SELECT * FROM (
+			SELECT * FROM instructor WHERE dept_name='CSE'
+		) AS view_dept (A,B,C,D) WHERE B LIKE 'XYZ%'
+	) AS view_name (E,F,G,H) WHERE H > 50
+) AS view_salary (I,J,K,L)
+
+
+This same query can be also written as follows using WITH clause.
+WITH view_salary AS (
+	WITH view_name AS (
+		WITH view_dept AS (
+			SELECT * FROM instructor WHERE dept_name='CSE'
+		) SELECT * FROM view_dept WHERE name LIKE 'XYZ%'
+	) SELECT * FROM view_name WHERE salary > 50
+) SELECT * FROM view_salary
+
+
+WITH view_dept AS (SELECT * FROM instructor WHERE dept_name='CSE'),  
+	view_name AS (SELECT * FROM view_dept WHERE name LIKE 'XYZ%'),  
+		view_salary AS (SELECT * FROM view_name WHERE salary > 50) 
+			SELECT * FROM view_salary
+
+In simple form, the same query can also be written as 
+select * from instructor WHERE dept_name='CSE' AND name LIKE 'XYZ%' AND salary > 50
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+CREATE TABLE test (name VARCHAR(20))
+
+INSERT INTO test VALUES ('XYZ');
+INSERT INTO test VALUES ('XYZ%');
+INSERT INTO test VALUES ('%XYZ');
+INSERT INTO test VALUES ('X%Y%Z');
+INSERT INTO test VALUES ('%X%Y%Z%');
+
+With tt(ID) AS (
+	SELECT * FROM test
+) SELECT * FROM tt
+
+SELECT ID FROM (
+	SELECT IDD FROM (
+		SELECT * FROM test
+	) As ttt(IDD)
+) As tt(ID)
+
+WITH ttt AS (
+    WITH tt AS (SELECT * FROM test) SELECT * FROM tt
+) SELECT * FROM ttt
+
+WITH tttt(IDDD) As (
+	WITH ttt(IDD) AS (
+		WITH tt(ID) AS (SELECT * FROM test) SELECT ID FROM tt
+	)  SELECT IDD FROM ttt
+) SELECT IDDD FROM tttt
+			
+			

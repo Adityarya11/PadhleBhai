@@ -1,0 +1,93 @@
+CREATE TABLE SmallBig(id INT)
+
+INSERT INTO SmallBig VALUES(1)
+INSERT INTO SmallBig VALUES(5)
+INSERT INTO SmallBig VALUES(10)
+INSERT INTO SmallBig VALUES(15)
+INSERT INTO SmallBig VALUES(20)
+INSERT INTO SmallBig VALUES(25)
+INSERT INTO SmallBig VALUES(30)
+
+SELECT * from SmallBig
+------
+| id |
+------
+| 1  |
+| 5  |
+| 10 |
+| 15 |
+| 20 |
+| 25 |
+| 30 |
+------
+------------------------------------------------------------------------------------------
+Assumption: All are distinct.
+
+Query: Find the smallest.
+SELECT id FROM SmallBig a WHERE (0) = (SELECT COUNT(*) FROM SmallBig b WHERE b.id < a.id) 
+------
+| id |
+------
+| 1  |
+------
+Query: Find the largest.
+SELECT id FROM SmallBig a WHERE (0) = (SELECT COUNT(*) FROM SmallBig b WHERE b.id > a.id) 
+------
+| id |
+------
+| 30 |
+------
+------------------------------------------------------------------------------------------
+Query: Find the 2nd smallest.
+SELECT id FROM SmallBig a WHERE (1) = (SELECT COUNT(*) FROM SmallBig b WHERE b.id < a.id) 
+------
+| id |
+------
+| 5  |
+------
+
+(SELECT COUNT(*) FROM SmallBig b WHERE b.id < a.id) is a subquery that finds the number of items (count(*)) in the table where its value is less than the current one (a.id).
+
+1 = (SELECT COUNT(*) FROM SmallBig b WHERE b.id < a.id) 
+We pick the one that has exactly 1 item less than the current value. This means a.id should be the 2nd smallest.
+
+
+Query: Find the 2nd largest.
+SELECT id FROM SmallBig a WHERE (1) = (SELECT COUNT(*) FROM SmallBig b WHERE b.id > a.id) 
+------
+| id |
+------
+| 25 |
+------
+------------------------------------------------------------------------------------------
+Query: Find the 3rd smallest.
+SELECT id FROM SmallBig a WHERE (2) = (SELECT COUNT(*) FROM SmallBig b WHERE b.id < a.id) 
+------
+| id |
+------
+| 10 |
+------
+Query: Find the 3rd largest.
+SELECT id FROM SmallBig a WHERE (2) = (SELECT COUNT(*) FROM SmallBig b WHERE b.id > a.id) 
+------
+| id |
+------
+| 20 |
+------
+------------------------------------------------------------------------------------------
+Query: Find the 4th smallest.
+SELECT id FROM SmallBig a WHERE (3) = (SELECT COUNT(*) FROM SmallBig b WHERE b.id < a.id) 
+------
+| id |
+------
+| 15 |
+------
+Query: Find the 4th largest.
+SELECT id FROM SmallBig a WHERE (3) = (SELECT COUNT(*) FROM SmallBig b WHERE b.id > a.id) 
+------
+| id |
+------
+| 15 |
+------
+
+

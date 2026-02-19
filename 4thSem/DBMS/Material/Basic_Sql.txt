@@ -1,0 +1,114 @@
+CREATE TABLE department(
+	dept_name 	VARCHAR(20),
+	building 	VARCHAR(15),
+	budget 		NUMERIC(12,2),
+	PRIMARY KEY(dept_name)
+);
+
+CREATE TABLE department(
+	dept_name 	VARCHAR(20) PRIMARY KEY,
+	building 	VARCHAR(15),
+	budget 		NUMERIC(12,2)
+);
+
+CREATE TABLE instructor(
+	id 			VARCHAR(5),
+	name 		VARCHAR(20) NOT NULL,
+	dept_name 	VARCHAR(20),
+	salary 		NUMERIC(8,2),
+	PRIMARY KEY(id),
+	FOREIGN KEY(dept_name) REFERENCES department(dept_name)
+);
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+When a table has a PRIMARY KEY which consists of multiple attributes, then 
+CREATE TABLE example_table (
+    column1 INT,
+    column2 INT,
+    column3 VARCHAR(50),
+	PRIMARY KEY (column1, column2)
+); will work
+
+BUT, the following will not work because it means 'Multiple primary key defined'
+CREATE TABLE example_table (
+    column1 INT PRIMARY KEY,
+    column2 INT PRIMARY KEY,
+    column3 VARCHAR(50)
+);
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+DELETE FROM department;
+
+DROP department;
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+Find the department names of all instructors...
+SELECT dept_name FROM instructor;
+
+Since more than one instructor can belong to a department, a department name could appear more than once in the instructor relation. So if we want to elimanate duplicates then use...
+SELECT DISTINCT dept_name FROM instructor;
+
+TO specify explicitly that duplicates are not removed, use...
+SELECT ALL dept_name FROM instructor;
+
+SELECT * FROM instructor, department;
+Gives the result of Cartesian product and the attribute names will be
+<id, name, dept_name, salary, dept_name, building, budget>
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+A typical SQL query has the form...
+SELECT A1, A2, ..., An
+FROM r1, r2, ..., rm
+WHERE P;
+
+A1, A2, ..., An are attributes.
+r1, r2, ..., rm are tables.
+P is condition(s).
+
+Although the clauses must be written in the order -- SELECT, FROM, WHERE, the easiest way to understand the operations specified by the query is to consider the clauses in operational order - first FROM, then WHERE, and then SELECT.
+
+Let 'r' be a cartesian product relation, i.e., the relation which stores the cartesian product of r1, r2, ..., rm.
+For Each tuple t1 in relation r1
+	For Each tuple t2 in relation r2
+		...
+			For Each tuple tm in relation rm
+				Concatenate t1, t2, ..., tm into a single tuple t
+				Add t into the cartesian product relation r
+			End For	
+		...
+	End For			
+End For	
+		
+Let 'temp' be a temporary relation which stores the tuples of cartesian product relation 'r' that satisfy condition(s) P.
+For Each tuple t in relation r
+	If t satisfies the condition 'P' mentioned in WHERE clause 
+		Add t into the temporary relation temp
+	Else
+		Ignore t
+	End If
+End For	
+
+Now Select Attributes from temporary relation 'temp' mentioned in SELECT clause 
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
+The result of the cartesian can be an extremely large relation, and it rarely makes sense to create such a Cartesian product.  Instead, the predicate in the WHERE clause is used to restrict the combinations created by the Cartesian product to those that are meaningful for the desired answer. 
+
+Let 'temp' be a temporary relation which stores the tuples of cartesian product (of r1, r2, ..., rm) that satisfy condition(s) P.
+For Each tuple t1 in relation r1
+	For Each tuple t2 in relation r2
+		...
+			For Each tuple tm in relation rm
+				Concatenate t1, t2, ..., tm into a single tuple t
+				If t satisfies the condition 'P' mentioned in WHERE clause 
+					Add t into the temporary relation temp
+				Else
+					Ignore t
+				End If
+			End For	
+		...
+	End For			
+End For	
+	
+Now Select Attributes from temporary relation 'temp' mentioned in SELECT clause 
+-----------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------

@@ -1,0 +1,145 @@
+****************************************************************
+TABLE CREATION
+****************************************************************
+CREATE TABLE nulltable (A INT);
+
+INSERT INTO nulltable VALUES(10);
+INSERT INTO nulltable VALUES(20);
+INSERT INTO nulltable VALUES(20);
+INSERT INTO nulltable VALUES(NULL);
+INSERT INTO nulltable VALUES(NULL);
+INSERT INTO nulltable VALUES(NULL);
+--------
+| A    | 
+--------
+| 10   |
+| 20   | 
+| 20   |
+| NULL | 
+| NULL | 
+| NULL | 
+--------
+****************************************************************
+****************************************************************
+SELECT * FROM nulltable
+--------
+| A    | 
+--------
+| 10   |
+| 20   | 
+| 20   |
+| NULL | 
+| NULL | 
+| NULL | 
+--------
+----------------------------------------------------
+SELECT DISTINCT A FROM nulltable
+--------
+| A    | 
+--------
+| 10   |
+| 20   |  
+| NULL | 
+--------
+----------------------------------------------------
+SELECT A FROM nulltable WHERE A IS NULL
+--------
+| A    | 
+--------
+| NULL | 
+| NULL | 
+| NULL | 
+--------
+----------------------------------------------------
+SELECT A FROM nulltable WHERE A IS NOT NULL
+------
+| A  | 
+------
+| 10 |
+| 20 |  
+| 20 |  
+------
+----------------------------------------------------
+SELECT A FROM nulltable WHERE A > 10
+------
+| A  | 
+------
+| 20 |  
+| 20 |  
+------
+----------------------------------------------------
+SELECT A FROM nulltable WHERE A > 10 IS UNKNOWN
+--------
+| A    | 
+--------
+| NULL | 
+| NULL | 
+| NULL | 
+--------
+----------------------------------------------------
+SELECT A FROM nulltable WHERE A > 10 IS NOT UNKNOWN
+------
+| A  | 
+------
+| 10 | 
+| 20 |  
+| 20 |  
+------
+
+
+
+
+
+
+
+****************************************************************
+TABLE CREATION
+****************************************************************
+CREATE TABLE nulltabletwo (A INT, B VARCHAR(20));
+
+INSERT INTO nulltabletwo VALUES(10, 'hello');
+INSERT INTO nulltabletwo VALUES(20, 'hi');
+INSERT INTO nulltabletwo VALUES(NULL, NULL);
+INSERT INTO nulltabletwo VALUES(NULL, NULL);
+INSERT INTO nulltabletwo VALUES(10, NULL);
+INSERT INTO nulltabletwo VALUES(10, NULL);
+INSERT INTO nulltabletwo VALUES(NULL, 20);
+INSERT INTO nulltabletwo VALUES(NULL, 20);
+----------------
+| A    | B     |
+----------------
+| 10   | hello |
+| 20   | hi    |
+| NULL | NULL  | 	
+| NULL | NULL  | 	
+| 10   | NULL  | 
+| 10   | NULL  | 
+| NULL | 20    |
+| NULL | 20    |
+----------------
+****************************************************************
+****************************************************************
+SELECT * FROM nulltabletwo
+----------------
+| A    | B     |
+----------------
+| 10   | hello |
+| 20   | hi    |
+| NULL | NULL  | 	
+| NULL | NULL  | 	
+| 10   | NULL  | 
+| 10   | NULL  | 
+| NULL | 20    |
+| NULL | 20    |
+----------------
+----------------------------------------------------
+SELECT DISTINCT * FROM nulltabletwo
+----------------
+| A    | B     |
+----------------
+| 10   | hello |
+| 20   | hi    |
+| NULL | NULL  | 	
+| 10   | NULL  | 
+| NULL | 20    |
+----------------

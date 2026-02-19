@@ -1,0 +1,76 @@
+CREATE TABLE department(dept_name VARCHAR(20), building VARCHAR(20), budget INT, PRIMARY KEY(dept_name))
+
+CREATE TABLE instructor(id INT, name VARCHAR(20), dept_name VARCHAR(20), salary INT, PRIMARY KEY(id), FOREIGN KEY(dept_name) REFERENCES department(dept_name))
+
+Given the name of a department, returns the count of the number of instructors in that department.
+
+DELIMITER //
+CREATE FUNCTION dept_count(dept_name VARCHAR(20))
+RETURNS INT
+DETERMINISTIC
+	BEGIN
+		DECLARE d_count INT;
+		SELECT COUNT(*) INTO d_count 
+		FROM instructor
+		WHERE instructor.dept_name = dept_name;
+		RETURN d_count;
+	END //
+DELIMITER ;
+In the above function, we are using 'instructor.dept_name' just to make sure this 'dept_name' is the attribute of the relation, not the argument to the function (as both are having the same name 'dept_name'). If we pass department name to the function, with a name other than 'dept_name', then there is no need to mention 'instructor.dept_name'. See below function which is the same as above.
+	
+DELIMITER //
+CREATE FUNCTION dept_count(dname VARCHAR(20))
+RETURNS INT
+DETERMINISTIC
+	BEGIN
+		DECLARE d_count INT;
+		SELECT COUNT(*) INTO d_count 
+		FROM instructor
+		WHERE dept_name = dname;   
+		RETURN d_count;
+	END //
+DELIMITER ;
+	
+Query: Find the information about the department where there are two or more instructors.	
+SELECT * FROM department WHERE dept_count(dept_name) >= 2
+----------------------------------------------------------------------------------------------------
+Given a salary, returns the count of the number of instructors who are receiving that salary.
+
+DELIMITER //
+CREATE FUNCTION instructor_salary(salary INT)
+RETURNS INT
+DETERMINISTIC
+	BEGIN
+		DECLARE d_count INT;
+		SELECT count(*) INTO d_count 
+		FROM instructor
+		WHERE instructor.salary = salary;
+		RETURN d_count;
+	END // 
+DELIMITER ;
+
+Query: Find the number of instructors whose salary is 100.
+SELECT instructor_salary(100) 
+	
+Query: Find the information about the instructor where there is at least one more instructor who is receiving the same salary as him/her him.
+SELECT * FROM instructor WHERE instructor_salary(salary) >=2
+----------------------------------------------------------------------------------------------------	
+To delete a function use ...
+DROP FUNCTION function_name;
+----------------------------------------------------------------------------------------------------	
+Following content is taken from https://dev.mysql.com/doc/refman/8.0/en/create-procedure.html ...
+
+A routine is considered "deterministic" if it always produces the same result for the same input parameters, and "not deterministic" otherwise. If neither DETERMINISTIC nor NOT DETERMINISTIC is given in the routine definition, the default is NOT DETERMINISTIC. To declare that a function is deterministic, you must specify DETERMINISTIC explicitly.
+
+Assessment of the nature of a routine is based on the "honesty" of the creator: MySQL does not check that a routine declared DETERMINISTIC is free of statements that produce nondeterministic results. However, misdeclaring a routine might affect results or affect performance. Declaring a nondeterministic routine as DETERMINISTIC might lead to unexpected results by causing the optimizer to make incorrect execution plan choices. Declaring a deterministic routine as NONDETERMINISTIC might diminish performance by causing available optimizations not to be used.
+
+DELIMITER //
+or
+DELIMITER $$ 
+or 
+DELIMITER }}
+
+By default, a stored routine (a stored procedure or function) is associated with the default database. 
+To associate the routine explicitly with a given database, specify the name as db_name.sp_name when you create it.
+
+	

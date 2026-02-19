@@ -1,0 +1,268 @@
+****************************************************************
+TABLE CREATION
+****************************************************************
+CREATE TABLE tabnatural1(a INT, b INT, c VARCHAR(10));
+CREATE TABLE tabnatural2(a INT, b INT, d VARCHAR(10));
+
+INSERT INTO tabnatural1 VALUES(1, 11, 'x');
+INSERT INTO tabnatural1 VALUES(2, 22, 'y');
+--------------
+| a | b  | c |
+--------------
+| 1 | 11 | x |
+| 2 | 22 | y |
+--------------
+
+INSERT INTO tabnatural2 VALUES(2, 22, 'y');
+INSERT INTO tabnatural2 VALUES(3, 33, 'z');
+--------------
+| a | b  | d |
+--------------
+| 2 | 22 | y |
+| 3 | 33 | z |
+--------------
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+, / CROSS JOIN / INNER JOIN / JOIN 
+All are equivalent without USING / ON
+****************************************************************
+SELECT * FROM tabnatural1 CROSS JOIN tabnatural2;
+or 
+SELECT * FROM tabnatural1 INNER JOIN tabnatural2; 
+or 
+SELECT * FROM tabnatural1 JOIN tabnatural2; 
+or 
+SELECT * FROM tabnatural1, tabnatural2; 
+---------------------------
+| a | b  | c | a | b  | d |
+---------------------------
+| 2 | 22 | y | 2 | 22 | y |
+| 1 | 11 | x | 2 | 22 | y |
+| 2 | 22 | y | 3 | 33 | z |
+| 1 | 11 | x | 3 | 33 | z |
+---------------------------
+
+SELECT * FROM tabnatural2 CROSS JOIN tabnatural1;
+or 
+SELECT * FROM tabnatural2 INNER JOIN tabnatural1;
+or 
+SELECT * FROM tabnatural2 JOIN tabnatural1; 
+or 
+SELECT * FROM tabnatural2, tabnatural1;
+---------------------------
+| a | b  | d | a | b  | c |
+---------------------------
+| 3 | 33 | z | 1 | 11 |	x |
+| 2 | 22 | y | 1 | 11 |	x |
+| 3 | 33 | z | 2 | 22 | y |
+| 2 | 22 | y | 2 | 22 |	y |
+---------------------------
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+NATURAL JOIN / NATURAL INNER JOIN
+Cannot use USING / ON with NATURAL JOIN / NATURAL INNER JOIN
+Can use WHERE with NATURAL JOIN / NATURAL INNER JOIN
+****************************************************************
+SELECT * FROM tabnatural1 NATURAL JOIN tabnatural2;
+or 
+SELECT * FROM tabnatural1 NATURAL INNER JOIN tabnatural2; 
+------------------
+| a | b  | c | d |
+------------------
+| 2 | 22 | y | y |
+------------------
+
+SELECT * FROM tabnatural2 NATURAL JOIN tabnatural1;
+or 
+SELECT * FROM tabnatural2 NATURAL INNER JOIN tabnatural1; 
+------------------
+| a | b  | d | c |
+------------------
+| 2 | 22 | y | y |
+------------------
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+****************************************************************
+SELECT * FROM tabnatural1 NATURAL JOIN tabnatural2;
+is equivalent to
+SELECT * FROM tabnatural1 CROSS JOIN tabnatural2 USING (a,b);
+is equivalent to
+SELECT * FROM tabnatural1 INNER JOIN tabnatural2 USING (a,b);
+is equivalent to
+SELECT * FROM tabnatural1 JOIN tabnatural2 USING (a,b);
+if tabnatural1 and tabnatural2 have two common atributes named a and b
+------------------
+| a | b  | c | d |
+------------------
+| 2 | 22 | y | y |
+------------------
+With , we cannot use USING / ON
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+****************************************************************
+SELECT * FROM tabnatural1 CROSS JOIN tabnatural2 ON tabnatural1.a = tabnatural2.a AND tabnatural1.b = tabnatural2.b;
+is equivalent to
+SELECT * FROM tabnatural1 INNER JOIN tabnatural2 ON tabnatural1.a = tabnatural2.a AND tabnatural1.b = tabnatural2.b;
+is equivalent to
+SELECT * FROM tabnatural1 JOIN tabnatural2 ON tabnatural1.a = tabnatural2.a AND tabnatural1.b = tabnatural2.b;
+---------------------------
+| a | b  | c | a | b  | d |
+---------------------------
+| 2 | 22 | y | 2 | 22 | y |
+---------------------------
+
+SELECT * FROM tabnatural2 CROSS JOIN tabnatural1 ON tabnatural2.a = tabnatural1.a AND tabnatural2.b = tabnatural1.b;
+is equivalent to
+SELECT * FROM tabnatural2 INNER JOIN tabnatural1 ON tabnatural2.a = tabnatural1.a AND tabnatural2.b = tabnatural1.b;
+is equivalent to
+SELECT * FROM tabnatural2 JOIN tabnatural1 ON tabnatural2.a = tabnatural1.a AND tabnatural2.b  = tabnatural1.b;
+---------------------------
+| a | b  | d | a | b  | c |
+---------------------------
+| 2 | 22 | y | 2 | 22 | y |
+---------------------------
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+****************************************************************
+SELECT * FROM tabnatural1 NATURAL LEFT OUTER JOIN tabnatural2;
+or 
+SELECT * FROM tabnatural1 LEFT OUTER JOIN tabnatural2 USING(a,b);
+if tabnatural1 and tabnatural2 have two common atributes named a and b
+---------------------
+| a | b  | c | d    |
+---------------------
+| 1 | 11 | x | NULL |
+| 2 | 22 | y | y    |
+---------------------
+
+SELECT * FROM tabnatural2 NATURAL LEFT OUTER JOIN tabnatural1;
+or 
+SELECT * FROM tabnatural2 LEFT OUTER JOIN tabnatural1 USING(a,b);
+if tabnatural1 and tabnatural2 have two common atributes named a and b
+---------------------
+| a | b  | d | c    |
+---------------------
+| 2 | 22 | y | y    |
+| 3 | 33 | z | NULL |
+---------------------
+
+SELECT * FROM tabnatural1 NATURAL RIGHT OUTER JOIN tabnatural2;
+or 
+SELECT * FROM tabnatural1 RIGHT OUTER JOIN tabnatural2 USING(a,b);
+if tabnatural1 and tabnatural2 have two common atributes named a and b
+---------------------
+| a | b  | d | c    |
+---------------------
+| 2 | 22 | y | y    |
+| 3 | 33 | z | NULL |
+---------------------
+
+SELECT * FROM tabnatural2 NATURAL RIGHT OUTER JOIN tabnatural1;
+or 
+SELECT * FROM tabnatural2 RIGHT OUTER JOIN tabnatural1 USING(a,b);
+if tabnatural1 and tabnatural2 have two common atributes named a and b
+---------------------
+| a | b  | c | d    |
+---------------------
+| 1 | 11 | x | NULL |
+| 2 | 22 | y | y    |
+---------------------
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+LEFT OUTER JOIN / LEFT JOIN
+RIGHT OUTER JOIN / RIGHT JOIN
+****************************************************************
+SELECT * FROM tabnatural1 LEFT OUTER JOIN tabnatural2 ON tabnatural1.a = tabnatural2.a AND tabnatural1.b = tabnatural2.b;
+-----------------------------------
+| a | b  | c | a    | b    | d    |
+-----------------------------------
+| 1 | 11 | x | NULL | NULL | NULL |
+| 2 | 22 | y | 2    | 22   | y    |
+-----------------------------------
+
+SELECT * FROM tabnatural2 LEFT OUTER JOIN tabnatural1 ON tabnatural2.a = tabnatural1.a AND tabnatural2.b = tabnatural1.b;
+-----------------------------------
+| a | b  | d | a    | b    | c    |
+-----------------------------------
+| 2 | 22 | y | 2    | 22   | y    |
+| 3 | 33 | z | NULL | NULL | NULL |
+-----------------------------------
+
+SELECT * FROM tabnatural1 RIGHT OUTER JOIN tabnatural2 ON tabnatural1.a = tabnatural2.a AND tabnatural1.b = tabnatural2.b;
+-----------------------------------
+| a    | b     | c   | a | b | d  |
+-----------------------------------
+| 2    | 22   | y    | 2 | 22 | y |
+| NULL | NULL | NULL | 3 | 33 | z |
+-----------------------------------
+
+SELECT * FROM tabnatural2 RIGHT OUTER JOIN tabnatural1 ON tabnatural2.a = tabnatural1.a AND tabnatural2.b = tabnatural1.b;
+-----------------------------------
+| a   | b    | d    | a | b  | c |
+-----------------------------------
+|NULL | NULL | NULL | 1 | 11 | x |
+| 2   | 22   | y    | 2 | 22 | y |
+-----------------------------------
+****************************************************************
+****************************************************************
+
+
+
+
+****************************************************************
+FULL OUTER JOIN (Not in Mysql)
+****************************************************************
+(SELECT a,b,c,d FROM tabnatural1 NATURAL LEFT OUTER JOIN tabnatural2)
+UNION
+(SELECT a,b,c,d FROM tabnatural1 NATURAL RIGHT OUTER JOIN tabnatural2);
+------------------------
+| a | b  | c    | d    |
+------------------------
+| 1 | 11 | x    | NULL |
+| 2 | 22 | y    | y    |
+| 3 | 33 | NULL | w    |
+------------------------
+****************************************************************
+****************************************************************
+
+
+
+
+SELECT * FROM tabnatural1 JOIN tabnatural2 ON tabnatural1.a = tabnatural2.a AND tabnatural1.b = tabnatural2.b
+is equivalent to
+SELECT * FROM tabnatural1, tabnatural2 WHERE tabnatural1.a = tabnatural2.a AND tabnatural1.b = tabnatural2.b
+-----------------------------------
+| a    | b     | c   | a | b | d  |
+-----------------------------------
+| 2    | 22   | y    | 2 | 22 | y |
+-----------------------------------
