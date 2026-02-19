@@ -107,9 +107,18 @@ def build_tree_html(current_path):
                     
                     icon = get_file_icon(ext)
                     
-                    # 2. Buttons
+                    # 2. Check if file exceeds GitHub's size limit (kept in LFS, not viewable on Pages)
+                    try:
+                        size_mb = os.path.getsize(entry.path) / (1024 * 1024)
+                    except OSError:
+                        size_mb = 0
+                    is_lfs = size_mb > GITHUB_LIMIT_MB
+                    
+                    # 3. Buttons
                     view_btn = ""
-                    if ext in ['.pdf', '.jpg', '.png', '.txt', '.py', '.cpp', '.c']:
+                    if is_lfs:
+                        view_btn = '<span class="btn" style="background-color:#6c3; cursor:default;" title="File too large for online preview">⚠ LFS</span>'
+                    elif ext in ['.pdf', '.jpg', '.png', '.txt', '.py', '.cpp', '.c']:
                         view_btn = f'<a href="{web_path}" target="_blank" class="btn btn-view">View</a>'
                     elif ext in ['.pptx', '.docx', '.xlsx']:
                         view_btn = f'<a href="#" onclick="viewOnline(\'{web_path}\'); return false;" class="btn btn-view">View Online</a>'
