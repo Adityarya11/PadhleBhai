@@ -24,7 +24,7 @@ IGNORE_DIRS = {
     '__pycache__', 'node_modules', 'venv', 'bin', 'obj',
 }
 IGNORE_FILES = {
-    'fresh_start.py', 'index.html', '.gitignore',
+    'generate_site.py', 'index.html', '.gitignore',
     'README.md', '.nojekyll', 'LICENSE',
 }
 
