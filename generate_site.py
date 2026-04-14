@@ -25,7 +25,7 @@ IGNORE_DIRS = {
 }
 IGNORE_FILES = {
     'generate_site.py', 'index.html', '.gitignore',
-    'README.md', '.nojekyll', 'LICENSE',
+    'README.md', '.nojekyll', 'LICENSE', 'normalize_filesname.py'
 }
 
 # ---------------------------------------------------------------------------
