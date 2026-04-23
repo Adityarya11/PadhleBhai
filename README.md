@@ -7,8 +7,10 @@ Open the url
 
 ### how to add a material 
 - clone the repo 
-- add the material to the specific path 
-- run the script `generate_html.py`
+- add the material to the specific path
+- run `normalize_filenames.py`
+- run the script `generate_site.py`
+- save html file.
 - push the changes
 
 Your files must be seen on the website shortly 
@@ -18,7 +20,7 @@ Easier to access as of website from anywhere anytime
 
 
 ### the working
-- `index.html` is an automated static webpage generated via `generate.html` (aint that stupid to write the whole html) 
+- `index.html` is an automated static webpage generated via `generate_site.py` (aint that stupid to write the whole html) 
 - run everytime whenever a new material is added 
 - the script will generate the list for the material and will append itself
 - Done.
