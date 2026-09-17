@@ -1,5 +1,14 @@
-# Files too large for a normal git blob (>100 MB) are stored in Git LFS.
+# Large files are stored in Git LFS. Two reasons:
+#   - anything over 100 MB cannot be a normal git blob at all
+#   - the GitHub Pages artifact has a 1 GB limit, and LFS files are checked out
+#     as pointers by the Pages workflow (lfs: false), so they cost it nothing.
+# Downloads still work: generate_site.py routes LFS files through
+# media.githubusercontent.com rather than the Pages host.
+#
 # Paths must match exactly - a stale rule silently stops protecting a file.
 6thSem/CN/Notes/CN_Part_1.pdf filter=lfs diff=lfs merge=lfs -text
 6thSem/CN/Notes/CN_Part_2.pdf filter=lfs diff=lfs merge=lfs -text
 6thSem/CN/Notes/CN_Part_3.pdf filter=lfs diff=lfs merge=lfs -text
+6thSem/Operational_Reasearch/OR_till_mid_sem.pdf filter=lfs diff=lfs merge=lfs -text
+6thSem/NLP/Notes/NLP_Part_1.pdf filter=lfs diff=lfs merge=lfs -text
+6thSem/NLP/Notes/NLP_Part_2.pdf filter=lfs diff=lfs merge=lfs -text

@@ -60,6 +60,8 @@ INFRA_DIRS = {
     "bin",
     "obj",
     "scripts",
+    "search",
+    "assets",
 }
 
 INFRA_FILES = {
@@ -90,6 +92,10 @@ PRIVATE = [
 
     # Personal scratch notes.
     "*.local.md",
+
+    # Extraction cache: rebuildable, large, and derived from private material
+    # as well as public, so it must never be committed.
+    ".index-cache",
 
     # Build output, caches and editor scratch files.
     "*.exe",

@@ -5,6 +5,7 @@
 # >>> managed by scripts/guard.py - edit PRIVATE in scripts/config.py >>>
 *_LAB
 *.local.md
+.index-cache
 *.exe
 *.obj
 *tempCodeRunnerFile*

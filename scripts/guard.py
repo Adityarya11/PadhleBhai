@@ -8,6 +8,7 @@ Checks performed:
   3. No tracked file is missing from disk (stale index entries).
   4. No file above the GitHub size limit is tracked outside Git LFS.
   5. No empty directories are left behind after a cleanup.
+  6. The search index matches the corpus, and leaks nothing guarded into it.
 
 Usage:
     python scripts/guard.py          # report only, exit 1 if anything is wrong
@@ -149,6 +150,55 @@ def check_oversized(files: list) -> list:
     return issues
 
 
+def check_index() -> list:
+    """The built index must cover the corpus and contain nothing guarded.
+
+    A stale index serves results for files that have moved or gone; a leaky one
+    publishes the full text of private material in a greppable JSON file that
+    stays in git history forever. Both are worse than the equivalent mistake in
+    the browse tree, so they are checked separately here.
+    """
+    import json
+
+    search_dir = config.ROOT / "search"
+    manifest_file = search_dir / "manifest.json"
+    if not manifest_file.exists():
+        return []           # no index built yet; not an error
+
+    try:
+        records = json.loads(manifest_file.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return [f"search/manifest.json is unreadable: {exc}"]
+
+    issues = []
+
+    # Nothing guarded may appear, under its own path or as a duplicate alias.
+    for record in records:
+        for path in [record["path"]] + record.get("also_at", []):
+            if config.is_private(path) or config.is_unlisted(path):
+                issues.append(f"guarded path present in the search index: {path}")
+    if issues:
+        return issues       # a leak outranks staleness; fix it first
+
+    from ingest import corpus
+
+    indexed = set()
+    for record in records:
+        indexed.add(record["path"])
+        indexed.update(record.get("also_at", []))
+    current = {rel for rel, _ in corpus.publishable_files()}
+
+    missing = sorted(current - indexed)
+    extra = sorted(indexed - current)
+    if missing:
+        issues.append(f"{len(missing)} file(s) not in the search index "
+                      f"(e.g. {missing[0]}) - run scripts/build_index.py")
+    if extra:
+        issues.append(f"{len(extra)} indexed file(s) no longer publishable "
+                      f"(e.g. {extra[0]}) - run scripts/build_index.py")
+    return issues
+
+
 def check_empty_dirs() -> list:
     issues = []
     for path in sorted(config.ROOT.rglob("*")):
@@ -180,6 +230,7 @@ def main() -> int:
     issues += check_private_tracked(files, args.fix)
     issues += check_stale_index(tracked_files() if args.fix else files, args.fix)
     issues += check_oversized(files)
+    issues += check_index()
     issues += check_empty_dirs()
 
     print()

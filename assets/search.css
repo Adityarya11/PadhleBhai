@@ -1,0 +1,248 @@
+/* Search UI. Shares the palette of the generated browse tree in index.html. */
+
+.search-box {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 11px 14px 11px 38px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #d4d4d4;
+  background-color: #252526;
+  border: 1px solid #3c3c3c;
+  border-radius: 7px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.search-box input:focus { border-color: #4ec9b0; }
+.search-box input::placeholder { color: #6a6a6a; }
+
+.search-box::before {
+  content: "\1F50D";
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.search-hint {
+  margin: 6px 2px 0;
+  font-size: 0.74rem;
+  color: #6a6a6a;
+}
+
+.search-hint kbd {
+  padding: 0 4px;
+  border: 1px solid #444;
+  border-radius: 3px;
+  color: #cccccc;
+}
+
+#search-status {
+  margin: 10px 2px;
+  font-size: 0.78rem;
+  color: #6a6a6a;
+}
+
+/* --- results --- */
+
+.result {
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 1px solid #2e2e2e;
+  border-radius: 6px;
+  background-color: #232324;
+}
+
+.result-head {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.result-title {
+  color: #4ec9b0;
+  text-decoration: none;
+  font-size: 0.97rem;
+  font-weight: 500;
+}
+
+.result-title:hover { text-decoration: underline; }
+
+.flag {
+  font-size: 0.68rem;
+  color: #b58900;
+  border: 1px solid #5a4a12;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.result-path,
+.card-path {
+  margin-top: 3px;
+  font-size: 0.76rem;
+  color: #7a7a7a;
+  word-break: break-all;
+}
+
+.result-facts,
+.card-facts {
+  margin-top: 3px;
+  font-size: 0.73rem;
+  color: #6a6a6a;
+}
+
+.result-hits:not(:empty) { margin-top: 8px; }
+
+.hit {
+  display: block;
+  padding: 5px 8px;
+  margin-bottom: 4px;
+  border-left: 2px solid #3a3a3a;
+  border-radius: 0 4px 4px 0;
+  background-color: #1d1d1e;
+  text-decoration: none;
+  color: #b8b8b8;
+  font-size: 0.79rem;
+  line-height: 1.5;
+}
+
+.hit:hover { border-left-color: #4ec9b0; background-color: #232326; }
+
+.hit-unit {
+  display: inline-block;
+  margin-right: 7px;
+  color: #4ec9b0;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.hit mark {
+  background-color: #4a4420;
+  color: #f0d78c;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.hit-more,
+.hit-none {
+  display: inline-block;
+  padding: 4px 9px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  color: #9a9a9a;
+  background: none;
+  border: 1px dashed #444;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.hit-more:hover { border-color: #4ec9b0; color: #4ec9b0; }
+.hit-none { cursor: default; border-style: solid; }
+
+.result-actions,
+.card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.btn-ghost {
+  background: none;
+  border: 1px solid #444;
+  color: #cccccc;
+  font-family: inherit;
+  font-size: 0.78em;
+  padding: 2px 9px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.btn-ghost:hover { border-color: #4ec9b0; color: #4ec9b0; }
+
+/* --- @ picker --- */
+
+.pick {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 10px;
+  margin-bottom: 3px;
+  text-align: left;
+  font-family: inherit;
+  color: #ce9178;
+  background-color: #232324;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pick:hover { border-color: #4ec9b0; background-color: #2a2d2e; }
+.pick-name { font-size: 0.88rem; }
+.pick-path { font-size: 0.72rem; color: #6a6a6a; word-break: break-all; }
+
+/* --- document card --- */
+
+.card {
+  padding: 16px 18px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background-color: #232324;
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 1.12rem;
+  color: #4ec9b0;
+}
+
+.card-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 11px;
+}
+
+.kw {
+  font-size: 0.72rem;
+  color: #9cdcfe;
+  background-color: #1d2d3a;
+  border-radius: 3px;
+  padding: 2px 7px;
+}
+
+.card-preview {
+  margin-top: 12px;
+  padding: 9px 11px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #b0b0b0;
+  background-color: #1d1d1e;
+  border-left: 2px solid #3a3a3a;
+  border-radius: 0 4px 4px 0;
+}
+
+.card-note {
+  margin-top: 10px;
+  font-size: 0.76rem;
+  color: #8a8a8a;
+}
+
+.empty {
+  font-size: 0.85rem;
+  color: #8a8a8a;
+}
+
+@media (max-width: 560px) {
+  .pick { flex-direction: column; gap: 2px; }
+  .result-actions, .card-actions { flex-wrap: wrap; }
+}

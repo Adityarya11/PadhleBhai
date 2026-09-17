@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>College Archives</title>
+    <link rel="stylesheet" href="assets/search.css">
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body {
@@ -156,6 +157,15 @@
             View on GitHub
         </a>
     </header>
+    <div class="search-box">
+        <input id="q" type="search" autocomplete="off" spellcheck="false"
+               placeholder="Search 25,572 pages of material…  (try: matrix chain, lecture 5, deadlock)">
+    </div>
+    <p class="search-hint">Press <kbd>/</kbd> to focus · type <kbd>@</kbd> to look up a document by name</p>
+    <div id="search-status"></div>
+    <div id="search-panel" hidden>
+        <div id="search-results"></div>
+    </div>
     <div class="toolbar">
         <button class="btn-collapse" id="toggleAll" onclick="toggleAll()">Expand All</button>
     </div>
@@ -231,7 +241,6 @@
 </ul>
 </details></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Algo_Midsem.pdf</span><a href="4thSem/DAA/Algo_Midsem.pdf" target="_blank" class="btn btn-view">View</a><a href="4thSem/DAA/Algo_Midsem.pdf" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Introduction_to_Algorithms.pdf</span><a href="4thSem/DAA/Introduction_to_Algorithms.pdf" target="_blank" class="btn btn-view">View</a><a href="4thSem/DAA/Introduction_to_Algorithms.pdf" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
 <li><details><summary>DBMS</summary><ul>
@@ -292,15 +301,10 @@
 <li><div class="file-row"><span class="file-icon">TXT</span><span class="file-name">Union_Intersect_Except.txt</span><a href="4thSem/DBMS/Material/Union_Intersect_Except.txt" target="_blank" class="btn btn-view">View</a><a href="4thSem/DBMS/Material/Union_Intersect_Except.txt" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Database_System_Concepts_7th_Ed.pdf</span><a href="4thSem/DBMS/Database_System_Concepts_7th_Ed.pdf" target="_blank" class="btn btn-view">View</a><a href="4thSem/DBMS/Database_System_Concepts_7th_Ed.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">midsem_DBMS.pdf</span><a href="4thSem/DBMS/midsem_DBMS.pdf" target="_blank" class="btn btn-view">View</a><a href="4thSem/DBMS/midsem_DBMS.pdf" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
 <li><details><summary>Numerical</summary><ul>
-<li><details><summary>Books</summary><ul>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Numerical_Methods.pdf</span><a href="4thSem/Numerical/Books/Numerical_Methods.pdf" target="_blank" class="btn btn-view">View</a><a href="4thSem/Numerical/Books/Numerical_Methods.pdf" download class="btn btn-dl">Download</a></div></li>
-</ul>
-</details></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Midsem_Numerical.pdf</span><a href="4thSem/Numerical/Midsem_Numerical.pdf" target="_blank" class="btn btn-view">View</a><a href="4thSem/Numerical/Midsem_Numerical.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Numerical_Methods_MA_221.pdf</span><a href="4thSem/Numerical/Numerical_Methods_MA_221.pdf" target="_blank" class="btn btn-view">View</a><a href="4thSem/Numerical/Numerical_Methods_MA_221.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Problem_Set_1.pdf</span><a href="4thSem/Numerical/Problem_Set_1.pdf" target="_blank" class="btn btn-view">View</a><a href="4thSem/Numerical/Problem_Set_1.pdf" download class="btn btn-dl">Download</a></div></li>
@@ -385,24 +389,8 @@
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Heuristic_Algorithm_Lab_assignment__hill_C__SA_and_Tabu.pdf</span><a href="5thSem/AdvAlgo/Assign/Heuristic_Algorithm_Lab_assignment__hill_C__SA_and_Tabu.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/Assign/Heuristic_Algorithm_Lab_assignment__hill_C__SA_and_Tabu.pdf" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
-<li><details><summary>LAB_1</summary><ul>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">1.cpp</span><a href="5thSem/AdvAlgo/LAB_1/1.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/LAB_1/1.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">2.cpp</span><a href="5thSem/AdvAlgo/LAB_1/2.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/LAB_1/2.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">ADVANCED_ALGORITHM_LAB_01_Network_Flow.pdf</span><a href="5thSem/AdvAlgo/LAB_1/ADVANCED_ALGORITHM_LAB_01_Network_Flow.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/LAB_1/ADVANCED_ALGORITHM_LAB_01_Network_Flow.pdf" download class="btn btn-dl">Download</a></div></li>
-</ul>
-</details></li>
-<li><details><summary>LAB_5</summary><ul>
-<li><div class="file-row"><span class="file-icon">PY</span><span class="file-name">1.py</span><a href="5thSem/AdvAlgo/LAB_5/1.py" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/LAB_5/1.py" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PY</span><span class="file-name">2.py</span><a href="5thSem/AdvAlgo/LAB_5/2.py" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/LAB_5/2.py" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PY</span><span class="file-name">3.py</span><a href="5thSem/AdvAlgo/LAB_5/3.py" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/LAB_5/3.py" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PY</span><span class="file-name">4.py</span><a href="5thSem/AdvAlgo/LAB_5/4.py" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/LAB_5/4.py" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PY</span><span class="file-name">5.py</span><a href="5thSem/AdvAlgo/LAB_5/5.py" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/LAB_5/5.py" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">primal_dual_Lab_assignment.pdf</span><a href="5thSem/AdvAlgo/LAB_5/primal_dual_Lab_assignment.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/LAB_5/primal_dual_Lab_assignment.pdf" download class="btn btn-dl">Download</a></div></li>
-</ul>
-</details></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Advance_Algo_Problem_Statements_PS1_to_PS17.pdf</span><a href="5thSem/AdvAlgo/Advance_Algo_Problem_Statements_PS1_to_PS17.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/Advance_Algo_Problem_Statements_PS1_to_PS17.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Advanced_Algorithms_syllabus.pdf</span><a href="5thSem/AdvAlgo/Advanced_Algorithms_syllabus.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/Advanced_Algorithms_syllabus.pdf" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Algorithm_Design_(1st_Edition)_by_Jon_Kleinberg_and_Eva_Tardos_2005_PDF.pdf</span><a href="5thSem/AdvAlgo/Algorithm_Design_%281st_Edition%29_by_Jon_Kleinberg_and_Eva_Tardos_2005_PDF.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/Algorithm_Design_%281st_Edition%29_by_Jon_Kleinberg_and_Eva_Tardos_2005_PDF.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">AMP-Chapter-09.pdf</span><a href="5thSem/AdvAlgo/AMP-Chapter-09.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/AMP-Chapter-09.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">FPTAS_Algo_for_knapsack.pdf</span><a href="5thSem/AdvAlgo/FPTAS_Algo_for_knapsack.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/FPTAS_Algo_for_knapsack.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">FPTAS_Algo_for_knapsack_final.pdf</span><a href="5thSem/AdvAlgo/FPTAS_Algo_for_knapsack_final.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AdvAlgo/FPTAS_Algo_for_knapsack_final.pdf" download class="btn btn-dl">Download</a></div></li>
@@ -421,44 +409,14 @@
 <li><details><summary>AI</summary><ul>
 <li><details><summary>23cs3068_AdityaArya_Assignment1</summary><ul>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">AI_Assignment_1_Aditya_Arya_23cs3068.pdf</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/AI_Assignment_1_Aditya_Arya_23cs3068.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/AI_Assignment_1_Aditya_Arya_23cs3068.pdf" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">LC1091.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/LC1091.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/LC1091.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">LC133.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/LC133.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/LC133.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">LC200.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/LC200.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/LC200.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">LC463.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/LC463.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/LC463.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">LC994.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/LC994.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment1/LC994.cpp" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
 <li><details><summary>23cs3068_AdityaArya_Assignment2</summary><ul>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">10_LC51.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/10_LC51.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/10_LC51.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">6_LC486.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/6_LC486.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/6_LC486.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">7_LC464.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/7_LC464.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/7_LC464.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">8_LC79.CPP</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/8_LC79.CPP" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/8_LC79.CPP" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">9_LC22.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/9_LC22.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/9_LC22.cpp" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">AI_Assignment_2_Aditya_Arya_23cs3068.pdf</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/AI_Assignment_2_Aditya_Arya_23cs3068.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment2/AI_Assignment_2_Aditya_Arya_23cs3068.pdf" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
 <li><details><summary>23cs3068_AdityaArya_Assignment3</summary><ul>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">AI+DS_AlgoAssignment_23CS3068.pdf</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/AI%2BDS_AlgoAssignment_23CS3068.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/AI%2BDS_AlgoAssignment_23CS3068.pdf" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_10_a.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_10_a.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_10_a.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_10_b.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_10_b.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_10_b.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_1_a.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_1_a.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_1_a.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_1_b.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_1_b.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_1_b.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_2_a.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_2_a.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_2_a.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_2_b.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_2_b.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_2_b.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_3_a.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_3_a.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_3_a.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_3_b.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_3_b.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_3_b.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_4_a.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_4_a.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_4_a.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_4_b.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_4_b.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_4_b.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_5_a.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_5_a.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_5_a.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_5_b.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_5_b.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_5_b.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_6_a.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_6_a.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_6_a.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_6_b.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_6_b.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_6_b.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_7_a.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_7_a.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_7_a.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_7_b.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_7_b.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_7_b.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_8_a.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_8_a.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_8_a.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_8_b.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_8_b.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_8_b.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_9_a.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_9_a.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_9_a.cpp" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">problem_9_b.cpp</span><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_9_b.cpp" target="_blank" class="btn btn-view">View</a><a href="5thSem/AI/23cs3068_AdityaArya_Assignment3/problem_9_b.cpp" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
 </ul>
@@ -472,38 +430,21 @@
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Assignment2.pdf</span><a href="5thSem/EmbedSys/Assignment2.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/EmbedSys/Assignment2.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">instruction_set_programs.pdf</span><a href="5thSem/EmbedSys/instruction_set_programs.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/EmbedSys/instruction_set_programs.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">DOC</span><span class="file-name">Syllabus_Embeded_Systems.docx</span><a href="#" onclick="viewOnline('5thSem/EmbedSys/Syllabus_Embeded_Systems.docx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/EmbedSys/Syllabus_Embeded_Systems.docx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C</span><span class="file-name">traffic.c</span><a href="5thSem/EmbedSys/traffic.c" target="_blank" class="btn btn-view">View</a><a href="5thSem/EmbedSys/traffic.c" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">UNIT_III_Introduction_to_Microcontroller.pdf</span><a href="5thSem/EmbedSys/UNIT_III_Introduction_to_Microcontroller.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/EmbedSys/UNIT_III_Introduction_to_Microcontroller.pdf" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
 <li><details><summary>OS</summary><ul>
-<li><details><summary>LAB1</summary><ul>
-<li><div class="file-row"><span class="file-icon">TXT</span><span class="file-name">file1.txt</span><a href="5thSem/OS/LAB1/file1.txt" target="_blank" class="btn btn-view">View</a><a href="5thSem/OS/LAB1/file1.txt" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">TXT</span><span class="file-name">newsample.txt</span><a href="5thSem/OS/LAB1/newsample.txt" target="_blank" class="btn btn-view">View</a><a href="5thSem/OS/LAB1/newsample.txt" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">TXT</span><span class="file-name">out.txt</span><a href="5thSem/OS/LAB1/out.txt" target="_blank" class="btn btn-view">View</a><a href="5thSem/OS/LAB1/out.txt" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">TXT</span><span class="file-name">sample.txt</span><a href="5thSem/OS/LAB1/sample.txt" target="_blank" class="btn btn-view">View</a><a href="5thSem/OS/LAB1/sample.txt" download class="btn btn-dl">Download</a></div></li>
-</ul>
-</details></li>
-<li><details><summary>LAB5</summary><ul>
-<li><div class="file-row"><span class="file-icon">C</span><span class="file-name">pipe_pin.c</span><a href="5thSem/OS/LAB5/pipe_pin.c" target="_blank" class="btn btn-view">View</a><a href="5thSem/OS/LAB5/pipe_pin.c" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C</span><span class="file-name">producer_consumer_menu.c</span><a href="5thSem/OS/LAB5/producer_consumer_menu.c" target="_blank" class="btn btn-view">View</a><a href="5thSem/OS/LAB5/producer_consumer_menu.c" download class="btn btn-dl">Download</a></div></li>
-</ul>
-</details></li>
-<li><details><summary>Material</summary><ul>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_10_Synchronisation_Problems.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lec_10_Synchronisation_Problems.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lec_10_Synchronisation_Problems.pptx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_11__Deadlock.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lec_11__Deadlock.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lec_11__Deadlock.pptx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_6_SRTF,_Priority,_RR_scheduling.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lec_6_SRTF%2C_Priority%2C_RR_scheduling.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lec_6_SRTF%2C_Priority%2C_RR_scheduling.pptx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_7_Advanced_scheduling_algo.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lec_7_Advanced_scheduling_algo.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lec_7_Advanced_scheduling_algo.pptx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_8_IPC.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lec_8_IPC.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lec_8_IPC.pptx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_9_process_synchronization.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lec_9_process_synchronization.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lec_9_process_synchronization.pptx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lect_3_Process_and_Its_concepts.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lect_3_Process_and_Its_concepts.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lect_3_Process_and_Its_concepts.pptx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lect_4_Process_states,_Multithreading.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lect_4_Process_states%2C_Multithreading.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lect_4_Process_states%2C_Multithreading.pptx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lect_5_FCFS,_SJF,_SRTF.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lect_5_FCFS%2C_SJF%2C_SRTF.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lect_5_FCFS%2C_SJF%2C_SRTF.pptx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lecture_1.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lecture_1.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lecture_1.pptx" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lecture_2.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Material/Lecture_2.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Material/Lecture_2.pptx" download class="btn btn-dl">Download</a></div></li>
-</ul>
-</details></li>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Lab_2_1.pdf</span><a href="5thSem/OS/Lab_2_1.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/OS/Lab_2_1.pdf" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_10_Synchronisation_Problems.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lec_10_Synchronisation_Problems.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lec_10_Synchronisation_Problems.pptx" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_11__Deadlock.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lec_11__Deadlock.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lec_11__Deadlock.pptx" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_6_SRTF,_Priority,_RR_scheduling.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lec_6_SRTF%2C_Priority%2C_RR_scheduling.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lec_6_SRTF%2C_Priority%2C_RR_scheduling.pptx" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_7_Advanced_scheduling_algo.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lec_7_Advanced_scheduling_algo.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lec_7_Advanced_scheduling_algo.pptx" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_8_IPC.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lec_8_IPC.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lec_8_IPC.pptx" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lec_9_process_synchronization.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lec_9_process_synchronization.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lec_9_process_synchronization.pptx" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lect_3_Process_and_Its_concepts.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lect_3_Process_and_Its_concepts.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lect_3_Process_and_Its_concepts.pptx" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lect_4_Process_states,_Multithreading.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lect_4_Process_states%2C_Multithreading.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lect_4_Process_states%2C_Multithreading.pptx" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lect_5_FCFS,_SJF,_SRTF.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lect_5_FCFS%2C_SJF%2C_SRTF.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lect_5_FCFS%2C_SJF%2C_SRTF.pptx" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lecture_1.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lecture_1.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lecture_1.pptx" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PPT</span><span class="file-name">Lecture_2.pptx</span><a href="#" onclick="viewOnline('5thSem/OS/Lecture_2.pptx'); return false;" class="btn btn-view">View Online</a><a href="5thSem/OS/Lecture_2.pptx" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">5th_sem_mid_sem_pyq.pdf</span><a href="5thSem/5th_sem_mid_sem_pyq.pdf" target="_blank" class="btn btn-view">View</a><a href="5thSem/5th_sem_mid_sem_pyq.pdf" download class="btn btn-dl">Download</a></div></li>
@@ -535,15 +476,12 @@
 </ul>
 </details></li>
 <li><details><summary>CompilerDesign</summary><ul>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">Assign_6.cpp</span><a href="6thSem/CompilerDesign/Assign_6.cpp" target="_blank" class="btn btn-view">View</a><a href="6thSem/CompilerDesign/Assign_6.cpp" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Assignment_3.pdf</span><a href="6thSem/CompilerDesign/Assignment_3.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/CompilerDesign/Assignment_3.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Assignment_6.pdf</span><a href="6thSem/CompilerDesign/Assignment_6.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/CompilerDesign/Assignment_6.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Compiler_Unit_1.pdf</span><a href="6thSem/CompilerDesign/Compiler_Unit_1.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/CompilerDesign/Compiler_Unit_1.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Compiler_Unit_2.pdf</span><a href="6thSem/CompilerDesign/Compiler_Unit_2.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/CompilerDesign/Compiler_Unit_2.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Compiler_Unit_5.pdf</span><a href="6thSem/CompilerDesign/Compiler_Unit_5.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/CompilerDesign/Compiler_Unit_5.pdf" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">input.cpp</span><a href="6thSem/CompilerDesign/input.cpp" target="_blank" class="btn btn-view">View</a><a href="6thSem/CompilerDesign/input.cpp" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Lecture_plan@2025-26~CS312.pdf</span><a href="6thSem/CompilerDesign/Lecture_plan%402025-26~CS312.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/CompilerDesign/Lecture_plan%402025-26~CS312.pdf" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">C++</span><span class="file-name">q1.cpp</span><a href="6thSem/CompilerDesign/q1.cpp" target="_blank" class="btn btn-view">View</a><a href="6thSem/CompilerDesign/q1.cpp" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
 <li><details><summary>DA</summary><ul>
@@ -557,11 +495,6 @@
 </ul>
 </details></li>
 <li><details><summary>DataMining</summary><ul>
-<li><details><summary>LAB3</summary><ul>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Lab_2.pdf</span><a href="6thSem/DataMining/LAB3/Lab_2.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/DataMining/LAB3/Lab_2.pdf" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Lab_3.pdf</span><a href="6thSem/DataMining/LAB3/Lab_3.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/DataMining/LAB3/Lab_3.pdf" download class="btn btn-dl">Download</a></div></li>
-</ul>
-</details></li>
 <li><details><summary>Notes</summary><ul>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Data_Mining_Notes_till_Midsem.pdf</span><a href="6thSem/DataMining/Notes/Data_Mining_Notes_till_Midsem.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/DataMining/Notes/Data_Mining_Notes_till_Midsem.pdf" download class="btn btn-dl">Download</a></div></li>
 </ul>
@@ -594,8 +527,8 @@
 <li><details><summary>NLP</summary><ul>
 <li><details><summary>Notes</summary><ul>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">NLP_Midsem.pdf</span><a href="6thSem/NLP/Notes/NLP_Midsem.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/NLP/Notes/NLP_Midsem.pdf" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">NLP_Part_1.pdf</span><a href="6thSem/NLP/Notes/NLP_Part_1.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/NLP/Notes/NLP_Part_1.pdf" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">NLP_Part_2.pdf</span><a href="6thSem/NLP/Notes/NLP_Part_2.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/NLP/Notes/NLP_Part_2.pdf" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">NLP_Part_1.pdf</span><span class="btn lfs-badge" title="Large file - download only">LFS</span><a href="https://media.githubusercontent.com/media/Adityarya11/PadhleBhai/main/6thSem/NLP/Notes/NLP_Part_1.pdf" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">NLP_Part_2.pdf</span><span class="btn lfs-badge" title="Large file - download only">LFS</span><a href="https://media.githubusercontent.com/media/Adityarya11/PadhleBhai/main/6thSem/NLP/Notes/NLP_Part_2.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">NLP_Part_3.pdf</span><a href="6thSem/NLP/Notes/NLP_Part_3.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/NLP/Notes/NLP_Part_3.pdf" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
@@ -620,7 +553,7 @@
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Assignments_assignment_problem.pdf</span><a href="6thSem/Operational_Reasearch/Assignments_assignment_problem.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/Operational_Reasearch/Assignments_assignment_problem.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Assignments_transportation.pdf</span><a href="6thSem/Operational_Reasearch/Assignments_transportation.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/Operational_Reasearch/Assignments_transportation.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Lecture_4-6.pdf</span><a href="6thSem/Operational_Reasearch/Lecture_4-6.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/Operational_Reasearch/Lecture_4-6.pdf" download class="btn btn-dl">Download</a></div></li>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">OR_till_mid_sem.pdf</span><a href="6thSem/Operational_Reasearch/OR_till_mid_sem.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/Operational_Reasearch/OR_till_mid_sem.pdf" download class="btn btn-dl">Download</a></div></li>
+<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">OR_till_mid_sem.pdf</span><span class="btn lfs-badge" title="Large file - download only">LFS</span><a href="https://media.githubusercontent.com/media/Adityarya11/PadhleBhai/main/6thSem/Operational_Reasearch/OR_till_mid_sem.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Practice_sheet_1.pdf</span><a href="6thSem/Operational_Reasearch/Practice_sheet_1.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/Operational_Reasearch/Practice_sheet_1.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Practice_sheet_2.pdf</span><a href="6thSem/Operational_Reasearch/Practice_sheet_2.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/Operational_Reasearch/Practice_sheet_2.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">slide_lec_1-3.pdf</span><a href="6thSem/Operational_Reasearch/slide_lec_1-3.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/Operational_Reasearch/slide_lec_1-3.pdf" download class="btn btn-dl">Download</a></div></li>
@@ -691,7 +624,6 @@
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Practice_questions.pdf</span><a href="6thSem/SWE/Practice_questions.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/SWE/Practice_questions.pdf" download class="btn btn-dl">Download</a></div></li>
 </ul>
 </details></li>
-<li><div class="file-row"><span class="file-icon">NB</span><span class="file-name">lab1.ipynb</span><a href="https://github.com/Adityarya11/PadhleBhai/blob/main/6thSem/lab1.ipynb" target="_blank" rel="noopener" class="btn btn-view">View</a><a href="6thSem/lab1.ipynb" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Revised_Academic_Calendar-Applicable_to_Diploma-UG_&amp;_PG_Students-All_Batch_with_Summer_Term_Phase_I_&amp;_II.pdf</span><a href="6thSem/Revised_Academic_Calendar-Applicable_to_Diploma-UG_%26_PG_Students-All_Batch_with_Summer_Term_Phase_I_%26_II.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/Revised_Academic_Calendar-Applicable_to_Diploma-UG_%26_PG_Students-All_Batch_with_Summer_Term_Phase_I_%26_II.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Syllabus_midsem.pdf</span><a href="6thSem/Syllabus_midsem.pdf" target="_blank" class="btn btn-view">View</a><a href="6thSem/Syllabus_midsem.pdf" download class="btn btn-dl">Download</a></div></li>
 </ul>
@@ -704,7 +636,6 @@
 </details></li>
 <li><details><summary>GenAI</summary><ul>
 <li><details><summary>Lectures</summary><ul>
-<li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Lecture_1.pdf</span><a href="7thSem/GenAI/Lectures/Lecture_1.pdf" target="_blank" class="btn btn-view">View</a><a href="7thSem/GenAI/Lectures/Lecture_1.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Lecture_10_latent_variable_II.pdf</span><a href="7thSem/GenAI/Lectures/Lecture_10_latent_variable_II.pdf" target="_blank" class="btn btn-view">View</a><a href="7thSem/GenAI/Lectures/Lecture_10_latent_variable_II.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Lecture_11_evaluating_GenModels.pdf</span><a href="7thSem/GenAI/Lectures/Lecture_11_evaluating_GenModels.pdf" target="_blank" class="btn btn-view">View</a><a href="7thSem/GenAI/Lectures/Lecture_11_evaluating_GenModels.pdf" download class="btn btn-dl">Download</a></div></li>
 <li><div class="file-row"><span class="file-icon">PDF</span><span class="file-name">Lecture_1_GenAI.pdf</span><a href="7thSem/GenAI/Lectures/Lecture_1_GenAI.pdf" target="_blank" class="btn btn-view">View</a><a href="7thSem/GenAI/Lectures/Lecture_1_GenAI.pdf" download class="btn btn-dl">Download</a></div></li>
@@ -848,5 +779,6 @@
             );
         }
     </script>
+    <script src="assets/search.js"></script>
 </body>
 </html>

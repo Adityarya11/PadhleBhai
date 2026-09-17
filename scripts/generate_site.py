@@ -9,6 +9,7 @@ Usage:
 """
 
 import html
+import json
 import os
 import subprocess
 import sys
@@ -47,12 +48,40 @@ NOTEBOOK_EXTS = {".ipynb"}
 # Page template
 # ---------------------------------------------------------------------------
 
-HTML_HEAD = f"""<!DOCTYPE html>
+PLACEHOLDER_TOKEN = "__SEARCH_PLACEHOLDER__"
+
+
+def search_placeholder() -> str:
+    """Placeholder text for the search box, sized from the built index."""
+    manifest = config.ROOT / "search" / "manifest.json"
+    examples = "  (try: matrix chain, lecture 5, deadlock)"
+    try:
+        records = json.loads(manifest.read_text(encoding="utf-8"))
+        pages = sum(record.get("units", 0) for record in records)
+        if pages:
+            return f"Search {pages:,} pages of material…{examples}"
+    except Exception:
+        pass
+    return f"Search the archive…{examples}"
+
+
+def _head() -> str:
+    """The page header, with the search placeholder filled in.
+
+    A plain replace, not .format(): the template is an f-string, so its escaped
+    CSS braces have already collapsed to single braces by this point and any
+    further formatting pass would fail on them.
+    """
+    return HTML_HEAD_TEMPLATE.replace(PLACEHOLDER_TOKEN, search_placeholder())
+
+
+HTML_HEAD_TEMPLATE = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{config.SITE_TITLE}</title>
+    <link rel="stylesheet" href="assets/search.css">
     <style>
         *, *::before, *::after {{ box-sizing: border-box; }}
         body {{
@@ -205,6 +234,15 @@ HTML_HEAD = f"""<!DOCTYPE html>
             View on GitHub
         </a>
     </header>
+    <div class="search-box">
+        <input id="q" type="search" autocomplete="off" spellcheck="false"
+               placeholder="__SEARCH_PLACEHOLDER__">
+    </div>
+    <p class="search-hint">Press <kbd>/</kbd> to focus · type <kbd>@</kbd> to look up a document by name</p>
+    <div id="search-status"></div>
+    <div id="search-panel" hidden>
+        <div id="search-results"></div>
+    </div>
     <div class="toolbar">
         <button class="btn-collapse" id="toggleAll" onclick="toggleAll()">Expand All</button>
     </div>
@@ -251,6 +289,7 @@ HTML_FOOT = """    </div>
             );
         }
     </script>
+    <script src="assets/search.js"></script>
 </body>
 </html>
 """
@@ -384,7 +423,7 @@ def main() -> int:
 
     print(f"Indexing {config.ROOT}")
     tree = build_tree(config.ROOT, lfs, counts)
-    config.INDEX_FILE.write_text(HTML_HEAD + tree + HTML_FOOT, encoding="utf-8")
+    config.INDEX_FILE.write_text(_head() + tree + HTML_FOOT, encoding="utf-8")
 
     # Tells GitHub Pages to serve the files as-is instead of running Jekyll,
     # which would otherwise hide any directory whose name starts with '_'.
