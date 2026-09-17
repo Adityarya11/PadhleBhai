@@ -1,7 +1,14 @@
-.DS_Store
-__pycache__/
-*.pyc
-*.exe
+# Private material and build junk are declared in scripts/config.py (PRIVATE)
+# and mirrored here by `python scripts/guard.py --fix`.
+# Add hand-written rules above the managed block; it is rewritten in place.
 
-DIP/
-7thSem/GenAI/Lab
+# >>> managed by scripts/guard.py - edit PRIVATE in scripts/config.py >>>
+/7thSem/DIP/
+/7thSem/GenAI/Lab/
+*.exe
+*.obj
+*tempCodeRunnerFile*
+*/__pycache__/*
+*.pyc
+/.DS_Store
+# <<< managed by scripts/guard.py <<<
