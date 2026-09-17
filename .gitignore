@@ -3,12 +3,12 @@
 # Add hand-written rules above the managed block; it is rewritten in place.
 
 # >>> managed by scripts/guard.py - edit PRIVATE in scripts/config.py >>>
-/7thSem/DIP/
-/7thSem/GenAI/Lab/
+*_LAB
+*.local.md
 *.exe
 *.obj
 *tempCodeRunnerFile*
-*/__pycache__/*
+__pycache__
 *.pyc
-/.DS_Store
+.DS_Store
 # <<< managed by scripts/guard.py <<<

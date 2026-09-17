@@ -63,12 +63,18 @@ def gitignore_lines() -> list:
     lines = []
     for pattern in config.PRIVATE:
         pattern = pattern.rstrip("/")
-        if "*" in pattern or "?" in pattern:
-            lines.append(pattern)
-        elif (config.ROOT / pattern).is_dir():
-            lines.append(f"/{pattern}/")
+        if "/" in pattern:
+            # git anchors any pattern containing a slash to the repo root, so
+            # mirror that explicitly and mark directories with a trailing slash.
+            line = pattern if pattern.startswith("/") else "/" + pattern
+            if (config.ROOT / pattern.lstrip("/")).is_dir():
+                line += "/"
         else:
-            lines.append(f"/{pattern}")
+            # A pattern with no slash matches that name at any depth in git.
+            # Leaving it unanchored is what makes "__pycache__" and "*_LAB"
+            # cover nested folders rather than only ones at the repo root.
+            line = pattern
+        lines.append(line)
     return lines
 
 

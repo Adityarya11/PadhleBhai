@@ -17,7 +17,7 @@ Every pattern is matched against a POSIX-style path relative to the repo root
 Note that '*' crosses '/' here, so '*.exe' matches at any depth.
 """
 
-from fnmatch import fnmatch
+from fnmatch import fnmatchcase
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -49,14 +49,29 @@ SITE_TITLE = "College Archives"
 # ---------------------------------------------------------------------------
 
 INFRA_DIRS = {
-    ".git", ".github", ".vscode", ".idea",
-    "__pycache__", "node_modules", "venv", ".venv", "bin", "obj",
+    ".git",
+    ".github",
+    ".vscode",
+    ".idea",
+    "__pycache__",
+    "node_modules",
+    "venv",
+    ".venv",
+    "bin",
+    "obj",
     "scripts",
 }
 
 INFRA_FILES = {
-    "index.html", "README.md", "LICENSE",
-    ".gitignore", ".gitattributes", ".nojekyll", ".DS_Store",
+    "index.html",
+    "trex.html",
+    "README.md",
+    "LICENSE",
+    ".gitignore",
+    ".gitattributes",
+    ".nojekyll",
+    ".DS_Store",
+    "idea.local.md",
 }
 
 # ---------------------------------------------------------------------------
@@ -67,15 +82,20 @@ INFRA_FILES = {
 # guard.py mirrors these into the managed block of .gitignore and reports any
 # matching file that is still tracked by git.
 PRIVATE = [
-    # Coursework that should not be public yet.
-    "7thSem/DIP",
-    "7thSem/GenAI/Lab",
+    # Lab work stays private. Any folder whose name ends in "_LAB" is excluded
+    # along with everything inside it, so new lab folders are covered simply by
+    # following the naming convention. Matching is case-sensitive: name them
+    # exactly "_LAB" (DIP_LAB, GENAI_LAB), not "_Lab".
+    "*_LAB",
 
-    # Build output and editor scratch files.
+    # Personal scratch notes.
+    "*.local.md",
+
+    # Build output, caches and editor scratch files.
     "*.exe",
     "*.obj",
     "*tempCodeRunnerFile*",
-    "*/__pycache__/*",
+    "__pycache__",
     "*.pyc",
     ".DS_Store",
 ]
@@ -96,19 +116,32 @@ NO_PREVIEW_EXTS = {".zip", ".rar", ".mp4", ".exe"}
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def rel_posix(path) -> str:
     """Return `path` as a POSIX-style path relative to the repo root."""
     return Path(path).resolve().relative_to(ROOT).as_posix()
 
 
 def matches(rel: str, patterns) -> bool:
-    """True if `rel` (a POSIX relative path) matches any of `patterns`."""
+    """True if `rel` (a POSIX relative path) matches any of `patterns`.
+
+    The path itself and every ancestor directory are tested, so a pattern that
+    names a folder ('*_LAB', '7thSem/DIP/DIP_LAB') also covers everything inside
+    it - the way a .gitignore rule does. Without this, guard.py would flag a
+    tracked lab *folder* but miss the tracked files within it.
+
+    Matching is case-sensitive on every platform (`fnmatchcase`). Plain
+    `fnmatch` folds case on Windows but not on Linux, which would make the same
+    rule behave differently locally and in CI.
+    """
+    parts = rel.split("/")
+    candidates = ["/".join(parts[:i]) for i in range(len(parts), 0, -1)]
+
     for pattern in patterns:
         pattern = pattern.rstrip("/")
-        if rel == pattern or rel.startswith(pattern + "/"):
-            return True
-        if fnmatch(rel, pattern):
-            return True
+        for candidate in candidates:
+            if candidate == pattern or fnmatchcase(candidate, pattern):
+                return True
     return False
 
 
