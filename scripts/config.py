@@ -89,14 +89,11 @@ PRIVATE = [
     # following the naming convention. Matching is case-sensitive: name them
     # exactly "_LAB" (DIP_LAB, GENAI_LAB), not "_Lab".
     "*_LAB",
-
     # Personal scratch notes.
     "*.local.md",
-
     # Extraction cache: rebuildable, large, and derived from private material
     # as well as public, so it must never be committed.
     ".index-cache",
-
     # Build output, caches and editor scratch files.
     "*.exe",
     "*.obj",

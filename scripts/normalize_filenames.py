@@ -28,7 +28,9 @@ def git_available() -> bool:
     try:
         subprocess.run(
             ["git", "rev-parse", "--git-dir"],
-            capture_output=True, check=True, cwd=config.ROOT,
+            capture_output=True,
+            check=True,
+            cwd=config.ROOT,
         )
         return True
     except Exception:
@@ -40,7 +42,8 @@ def is_tracked(rel: str) -> bool:
     try:
         result = subprocess.run(
             ["git", "ls-files", "--error-unmatch", "--", rel],
-            capture_output=True, cwd=config.ROOT,
+            capture_output=True,
+            cwd=config.ROOT,
         )
         return result.returncode == 0
     except Exception:
@@ -60,8 +63,16 @@ def move(old: Path, new: Path, tracked: bool, dry_run: bool) -> bool:
     try:
         if tracked:
             subprocess.run(
-                ["git", "mv", "--", config.rel_posix(old), new.relative_to(config.ROOT).as_posix()],
-                capture_output=True, check=True, cwd=config.ROOT,
+                [
+                    "git",
+                    "mv",
+                    "--",
+                    config.rel_posix(old),
+                    new.relative_to(config.ROOT).as_posix(),
+                ],
+                capture_output=True,
+                check=True,
+                cwd=config.ROOT,
             )
         else:
             os.rename(old, new)
@@ -142,16 +153,25 @@ def print_summary(dry_run: bool) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--dry-run", action="store_true",
-                        help="report the renames without touching anything")
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="report the renames without touching anything",
+    )
     args = parser.parse_args()
 
     print("Normalizing names (spaces -> underscores)")
     print(f"  Root: {config.ROOT}")
 
     use_git = git_available()
-    print("  Git:  " + ("tracked files move with `git mv`"
-                        if use_git else "not a git repo, renaming on disk only"))
+    print(
+        "  Git:  "
+        + (
+            "tracked files move with `git mv`"
+            if use_git
+            else "not a git repo, renaming on disk only"
+        )
+    )
     if args.dry_run:
         print("  Mode: dry run, nothing will be changed")
 

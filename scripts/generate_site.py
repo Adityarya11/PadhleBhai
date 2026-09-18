@@ -23,18 +23,43 @@ import config
 # ---------------------------------------------------------------------------
 
 FILE_TYPE_LABELS = {
-    ".pdf": "PDF", ".pptx": "PPT", ".ppt": "PPT",
-    ".docx": "DOC", ".doc": "DOC", ".xlsx": "XLS", ".xls": "XLS",
-    ".jpg": "IMG", ".jpeg": "IMG", ".png": "IMG", ".gif": "IMG",
-    ".zip": "ZIP", ".rar": "ZIP",
-    ".py": "PY", ".ipynb": "NB", ".cpp": "C++", ".c": "C", ".h": "H",
-    ".txt": "TXT", ".json": "JSON", ".md": "MD",
+    ".pdf": "PDF",
+    ".pptx": "PPT",
+    ".ppt": "PPT",
+    ".docx": "DOC",
+    ".doc": "DOC",
+    ".xlsx": "XLS",
+    ".xls": "XLS",
+    ".jpg": "IMG",
+    ".jpeg": "IMG",
+    ".png": "IMG",
+    ".gif": "IMG",
+    ".zip": "ZIP",
+    ".rar": "ZIP",
+    ".py": "PY",
+    ".ipynb": "NB",
+    ".cpp": "C++",
+    ".c": "C",
+    ".h": "H",
+    ".txt": "TXT",
+    ".json": "JSON",
+    ".md": "MD",
 }
 
 # Rendered by the browser itself.
 INLINE_EXTS = {
-    ".pdf", ".jpg", ".jpeg", ".png", ".gif",
-    ".txt", ".py", ".cpp", ".c", ".h", ".json", ".md",
+    ".pdf",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".txt",
+    ".py",
+    ".cpp",
+    ".c",
+    ".h",
+    ".json",
+    ".md",
 }
 
 # Rendered by Microsoft's free Office viewer.
@@ -299,13 +324,17 @@ HTML_FOOT = """    </div>
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def get_lfs_files() -> set:
     """POSIX relative paths of every file stored in Git LFS (empty set if none)."""
     try:
         result = subprocess.run(
             ["git", "-c", "core.quotepath=off", "lfs", "ls-files", "--name-only"],
-            capture_output=True, text=True, encoding="utf-8",
-            errors="surrogateescape", cwd=config.ROOT,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="surrogateescape",
+            cwd=config.ROOT,
         )
         return {line.strip() for line in result.stdout.splitlines() if line.strip()}
     except Exception:
@@ -335,16 +364,21 @@ def badge(ext: str) -> str:
 def view_button(ext: str, web_path: str, is_lfs: bool) -> str:
     """The preview control for a file, or an empty string when none applies."""
     if is_lfs:
-        return ('<span class="btn lfs-badge" '
-                'title="Large file - download only">LFS</span>')
+        return (
+            '<span class="btn lfs-badge" title="Large file - download only">LFS</span>'
+        )
     if ext in config.NO_PREVIEW_EXTS:
         return ""
     if ext in NOTEBOOK_EXTS:
-        return (f'<a href="{blob_url(web_path)}" target="_blank" rel="noopener" '
-                f'class="btn btn-view">View</a>')
+        return (
+            f'<a href="{blob_url(web_path)}" target="_blank" rel="noopener" '
+            f'class="btn btn-view">View</a>'
+        )
     if ext in OFFICE_EXTS:
-        return (f'<a href="#" onclick="viewOnline(\'{web_path}\'); return false;" '
-                f'class="btn btn-view">View Online</a>')
+        return (
+            f'<a href="#" onclick="viewOnline(\'{web_path}\'); return false;" '
+            f'class="btn btn-view">View Online</a>'
+        )
     if ext in INLINE_EXTS:
         return f'<a href="{web_path}" target="_blank" class="btn btn-view">View</a>'
     return ""
@@ -354,6 +388,7 @@ def view_button(ext: str, web_path: str, is_lfs: bool) -> str:
 # Tree building
 # ---------------------------------------------------------------------------
 
+
 def build_tree(current: Path, lfs: set, counts: dict) -> str:
     """Render the directory at `current` as a nested <ul>, guards applied.
 
@@ -362,7 +397,9 @@ def build_tree(current: Path, lfs: set, counts: dict) -> str:
     """
     items = []
     try:
-        entries = sorted(os.scandir(current), key=lambda e: (not e.is_dir(), e.name.lower()))
+        entries = sorted(
+            os.scandir(current), key=lambda e: (not e.is_dir(), e.name.lower())
+        )
     except PermissionError:
         return ""
 
@@ -382,8 +419,8 @@ def build_tree(current: Path, lfs: set, counts: dict) -> str:
             if not inner:
                 continue
             items.append(
-                f'<li><details><summary>{html.escape(entry.name)}</summary>'
-                f'{inner}</details></li>'
+                f"<li><details><summary>{html.escape(entry.name)}</summary>"
+                f"{inner}</details></li>"
             )
             continue
 
@@ -407,9 +444,9 @@ def build_tree(current: Path, lfs: set, counts: dict) -> str:
         items.append(
             f'<li><div class="file-row">{badge(ext)}'
             f'<span class="file-name">{html.escape(entry.name)}</span>'
-            f'{view_button(ext, web_path, is_lfs)}'
+            f"{view_button(ext, web_path, is_lfs)}"
             f'<a href="{dl_url}" download class="btn btn-dl">Download</a>'
-            f'</div></li>'
+            f"</div></li>"
         )
 
     if not items:

@@ -37,14 +37,14 @@ GitHub Actions publishes `main` to GitHub Pages on every push.
 
 ## Scripts
 
-| Script | What it does |
-| --- | --- |
-| `scripts/config.py` | Single source of truth: repo paths, GitHub target, and the guard lists. Everything else imports it. |
+| Script                           | What it does                                                                                                                |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `scripts/config.py`              | Single source of truth: repo paths, GitHub target, and the guard lists. Everything else imports it.                         |
 | `scripts/normalize_filenames.py` | Renames files and folders, spaces to underscores. Uses `git mv` for tracked paths so history follows. `--dry-run` previews. |
-| `scripts/generate_site.py` | Rebuilds `index.html` from the folder tree, applying the guards. |
-| `scripts/build_index.py` | Extracts text from every publishable file and builds the search index into `search/`. |
-| `scripts/search_cli.py` | Queries the built index from the terminal. The reference implementation of retrieval. |
-| `scripts/guard.py` | Checks the repo is in a publishable state. `--fix` applies what can be fixed safely. |
+| `scripts/generate_site.py`       | Rebuilds `index.html` from the folder tree, applying the guards.                                                            |
+| `scripts/build_index.py`         | Extracts text from every publishable file and builds the search index into `search/`.                                       |
+| `scripts/search_cli.py`          | Queries the built index from the terminal. The reference implementation of retrieval.                                       |
+| `scripts/guard.py`               | Checks the repo is in a publishable state. `--fix` applies what can be fixed safely.                                        |
 
 Run them from the repo root; they locate the root themselves, so the working
 directory does not matter.
@@ -53,7 +53,7 @@ directory does not matter.
 
 Two lists in `scripts/config.py` control visibility:
 
-- **`PRIVATE`** — kept off the site *and* out of GitHub. Mirrored into the
+- **`PRIVATE`** — kept off the site _and_ out of GitHub. Mirrored into the
   managed block of `.gitignore` by `guard.py --fix`. Currently covers
   `7thSem/DIP`, `7thSem/GenAI/Lab`, executables, and editor scratch files.
 - **`UNLISTED`** — still committed, but hidden from the page because a browser

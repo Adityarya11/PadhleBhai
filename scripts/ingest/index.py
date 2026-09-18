@@ -143,8 +143,8 @@ def build(records, extracted, aliases):
     `records` is the catalogue, already restricted to canonical documents and
     in the order that posting document indices refer to.
     """
-    postings = defaultdict(list)     # term -> [[docIdx, tf, pathTf?], ...]
-    doc_terms = {}                   # docId -> Counter, for TF-IDF keywords
+    postings = defaultdict(list)  # term -> [[docIdx, tf, pathTf?], ...]
+    doc_terms = {}  # docId -> Counter, for TF-IDF keywords
     total_length = 0
 
     for doc_index, record in enumerate(records):
@@ -221,35 +221,42 @@ def write(out_dir, records, postings, avgdl, extracted, progress=True):
         groups = bucket_units(item.units)
         record["buckets"] = len(groups)
         for bucket_index, (first_unit, units) in enumerate(groups):
-            _dump(docs_dir / f"{record['id']}-{bucket_index}.json",
-                  {"id": record["id"], "from": first_unit, "units": units})
+            _dump(
+                docs_dir / f"{record['id']}-{bucket_index}.json",
+                {"id": record["id"], "from": first_unit, "units": units},
+            )
             text_files += 1
 
     _dump(out_dir / "manifest.json", records)
-    _dump(out_dir / "meta.json", {
-        "version": INDEX_VERSION,
-        "docs": len(records),
-        "avgdl": round(avgdl, 3),
-        "k1": BM25_K1,
-        "b": BM25_B,
-        "pathWeight": PATH_FIELD_WEIGHT,
-        "shardWidth": SHARD_WIDTH,
-        # GitHub Pages serves an LFS file as its pointer, not its content, so
-        # anything flagged lfs in the manifest has to be fetched from the media
-        # host instead. generate_site.py does the same for the browse tree.
-        "lfsBase": (f"https://media.githubusercontent.com/media/"
-                    f"{config.GITHUB_OWNER}/{config.GITHUB_REPO}/"
-                    f"{config.GITHUB_BRANCH}/"),
-        "minTokenLen": tokens.MIN_TOKEN_LEN,
-        "maxTokenLen": tokens.MAX_TOKEN_LEN,
-        "bucketBytes": BUCKET_BYTES,
-        # The front end needs to know which shards exist so a query for a term
-        # in an empty prefix range does not fire a request that 404s.
-        "shards": sorted(shards),
-        # Only the shards whose file name differs from their key.
-        "shardFiles": shard_files,
-        "stopwords": sorted(tokens.STOPWORDS),
-    })
+    _dump(
+        out_dir / "meta.json",
+        {
+            "version": INDEX_VERSION,
+            "docs": len(records),
+            "avgdl": round(avgdl, 3),
+            "k1": BM25_K1,
+            "b": BM25_B,
+            "pathWeight": PATH_FIELD_WEIGHT,
+            "shardWidth": SHARD_WIDTH,
+            # GitHub Pages serves an LFS file as its pointer, not its content, so
+            # anything flagged lfs in the manifest has to be fetched from the media
+            # host instead. generate_site.py does the same for the browse tree.
+            "lfsBase": (
+                f"https://media.githubusercontent.com/media/"
+                f"{config.GITHUB_OWNER}/{config.GITHUB_REPO}/"
+                f"{config.GITHUB_BRANCH}/"
+            ),
+            "minTokenLen": tokens.MIN_TOKEN_LEN,
+            "maxTokenLen": tokens.MAX_TOKEN_LEN,
+            "bucketBytes": BUCKET_BYTES,
+            # The front end needs to know which shards exist so a query for a term
+            # in an empty prefix range does not fire a request that 404s.
+            "shards": sorted(shards),
+            # Only the shards whose file name differs from their key.
+            "shardFiles": shard_files,
+            "stopwords": sorted(tokens.STOPWORDS),
+        },
+    )
 
     if progress:
         print(f"  removed {removed} stale file(s)")
@@ -273,28 +280,35 @@ def _split_heavy_shards(shards: dict) -> dict:
     while pending:
         nxt = {}
         for shard, mapping in pending.items():
-            deeper = {term: entries for term, entries in mapping.items()
-                      if len(term) > len(shard)}
+            deeper = {
+                term: entries
+                for term, entries in mapping.items()
+                if len(term) > len(shard)
+            }
             # Nothing left to split on, or already small enough.
             if _json_size(mapping) <= SHARD_SPLIT_BYTES or not deeper:
                 result[shard] = mapping
                 continue
 
             # Terms equal in length to the key cannot go deeper; keep them here.
-            stay = {term: entries for term, entries in mapping.items()
-                    if len(term) == len(shard)}
+            stay = {
+                term: entries
+                for term, entries in mapping.items()
+                if len(term) == len(shard)
+            }
             if stay:
                 result[shard] = stay
             for term, entries in deeper.items():
-                nxt.setdefault(term[:len(shard) + 1], {})[term] = entries
+                nxt.setdefault(term[: len(shard) + 1], {})[term] = entries
         pending = nxt
 
     return result
 
 
 def _json_size(payload) -> int:
-    return len(json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
-               .encode("utf-8"))
+    return len(
+        json.dumps(payload, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    )
 
 
 def _dump(path, payload) -> None:

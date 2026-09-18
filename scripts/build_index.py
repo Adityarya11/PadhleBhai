@@ -19,7 +19,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import config
-from ingest import catalogue, corpus, index as index_mod, tokens
+from ingest import catalogue, corpus, tokens
+from ingest import index as index_mod
 
 OUT_DIR = config.ROOT / "search"
 
@@ -37,11 +38,16 @@ def directory_size(path: Path) -> int:
 
 def lfs_paths() -> set:
     import subprocess
+
     try:
         result = subprocess.run(
             ["git", "-c", "core.quotepath=off", "lfs", "ls-files", "--name-only"],
-            capture_output=True, text=True, encoding="utf-8",
-            errors="surrogateescape", cwd=config.ROOT)
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="surrogateescape",
+            cwd=config.ROOT,
+        )
         return {line.strip() for line in result.stdout.splitlines() if line.strip()}
     except Exception:
         return set()
@@ -49,10 +55,16 @@ def lfs_paths() -> set:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--no-cache", action="store_true",
-                        help="ignore the extraction cache and re-read every file")
-    parser.add_argument("--stats", action="store_true",
-                        help="report what would be built without writing anything")
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="ignore the extraction cache and re-read every file",
+    )
+    parser.add_argument(
+        "--stats",
+        action="store_true",
+        help="report what would be built without writing anything",
+    )
     args = parser.parse_args()
 
     started = time.time()
@@ -71,15 +83,17 @@ def main() -> int:
             aliases.setdefault(primary, []).append(rel)
     if aliases:
         duplicate_count = sum(len(v) for v in aliases.values())
-        print(f"  {duplicate_count} duplicate copy/copies folded into "
-              f"{len(aliases)} document(s)")
+        print(
+            f"  {duplicate_count} duplicate copy/copies folded into "
+            f"{len(aliases)} document(s)"
+        )
 
     # --- catalogue -----------------------------------------------------------
     lfs = lfs_paths()
     records, indexed, skipped = [], 0, 0
     for rel, path in files:
         if canonical.get(rel, rel) != rel:
-            continue                       # a duplicate of something else
+            continue  # a duplicate of something else
         item = extracted[rel]
         record = catalogue.make_record(rel, path, item, lfs)
         record["also_at"] = sorted(aliases.get(rel, []))
@@ -89,25 +103,32 @@ def main() -> int:
         else:
             skipped += 1
 
-    print(f"  {len(records)} catalogue record(s): "
-          f"{indexed} with text, {skipped} by name only")
+    print(
+        f"  {len(records)} catalogue record(s): "
+        f"{indexed} with text, {skipped} by name only"
+    )
 
     # --- index ---------------------------------------------------------------
     postings, doc_freq, doc_terms, avgdl = index_mod.build(records, extracted, aliases)
     catalogue.add_keywords(records, doc_terms, doc_freq, len(records))
 
-    print(f"  {len(postings):,} term(s), "
-          f"{sum(len(v) for v in postings.values()):,} posting(s), avgdl {avgdl:.0f}")
+    print(
+        f"  {len(postings):,} term(s), "
+        f"{sum(len(v) for v in postings.values()):,} posting(s), avgdl {avgdl:.0f}"
+    )
 
     if args.stats:
-        print(f"\nNothing written (--stats). {time.time()-started:.0f}s")
+        print(f"\nNothing written (--stats). {time.time() - started:.0f}s")
         return 0
 
     # --- safety net ----------------------------------------------------------
     # The index is a worse leak path than the browse tree: full text, greppable,
     # permanent in history. Re-check every record rather than trusting the walk.
-    leaked = [r["path"] for r in records
-              if config.is_private(r["path"]) or config.is_unlisted(r["path"])]
+    leaked = [
+        r["path"]
+        for r in records
+        if config.is_private(r["path"]) or config.is_unlisted(r["path"])
+    ]
     if leaked:
         print(f"\nABORTED: {len(leaked)} guarded path(s) reached the index:")
         for path in leaked[:10]:
@@ -126,7 +147,7 @@ def main() -> int:
     print(f"  terms     {human(terms):>10}")
     print(f"  docs      {human(docs):>10}")
     print(f"  total     {human(total):>10}")
-    print(f"\nBuilt in {time.time()-started:.0f}s -> {OUT_DIR.name}/")
+    print(f"\nBuilt in {time.time() - started:.0f}s -> {OUT_DIR.name}/")
     return 0
 
 

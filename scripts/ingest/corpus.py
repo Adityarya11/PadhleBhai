@@ -66,8 +66,11 @@ def _load_cache() -> dict:
 def _save_cache(entries: dict) -> None:
     CACHE_DIR.mkdir(exist_ok=True)
     with CACHE_FILE.open("wb") as handle:
-        pickle.dump({"version": CACHE_VERSION, "entries": entries}, handle,
-                    protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(
+            {"version": CACHE_VERSION, "entries": entries},
+            handle,
+            protocol=pickle.HIGHEST_PROTOCOL,
+        )
 
 
 def extract_all(files, use_cache: bool = True, progress: bool = True) -> dict:

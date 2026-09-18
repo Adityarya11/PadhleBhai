@@ -102,8 +102,8 @@ def search(index: Index, query: str, limit: int = 8, prefix_last: bool = True):
     path_weight = index.meta["pathWeight"]
 
     body_scores, path_scores = {}, {}
-    covered = {}          # doc -> query positions matched at all
-    path_covered = {}     # doc -> query positions matched in the name/path
+    covered = {}  # doc -> query positions matched at all
+    path_covered = {}  # doc -> query positions matched in the name/path
     matched = []
 
     for position, term in enumerate(query_terms):
@@ -140,7 +140,8 @@ def search(index: Index, query: str, limit: int = 8, prefix_last: bool = True):
                     dl = index.docs[doc_index].get("dl", 0)
                     norm = k1 * (1 - b + b * (dl / avgdl))
                     body_scores[doc_index] = body_scores.get(doc_index, 0.0) + (
-                        body_idf * (body_tf * (k1 + 1)) / (body_tf + norm) * damp)
+                        body_idf * (body_tf * (k1 + 1)) / (body_tf + norm) * damp
+                    )
                     covered.setdefault(doc_index, set()).add(position)
 
                 # Path and title: its own field, saturating but not
@@ -150,8 +151,12 @@ def search(index: Index, query: str, limit: int = 8, prefix_last: bool = True):
                 # actually titled "Matrix Chain Multiplication".
                 if path_tf > 0:
                     path_scores[doc_index] = path_scores.get(doc_index, 0.0) + (
-                        path_idf * path_weight
-                        * (path_tf * (k1 + 1)) / (path_tf + k1) * damp)
+                        path_idf
+                        * path_weight
+                        * (path_tf * (k1 + 1))
+                        / (path_tf + k1)
+                        * damp
+                    )
                     covered.setdefault(doc_index, set()).add(position)
                     path_covered.setdefault(doc_index, set()).add(position)
 
@@ -161,20 +166,28 @@ def search(index: Index, query: str, limit: int = 8, prefix_last: bool = True):
         # "CUDA-Programming-Parallel.pdf" should not win "dynamic programming"
         # on the strength of one word in its title.
         path_fraction = len(path_covered.get(doc_index, ())) / len(query_terms)
-        total_score = (body_scores.get(doc_index, 0.0)
-                       + path_scores.get(doc_index, 0.0) * path_fraction)
+        total_score = (
+            body_scores.get(doc_index, 0.0)
+            + path_scores.get(doc_index, 0.0) * path_fraction
+        )
 
         # Coverage: matching every word beats matching one common word loudly.
         coverage = len(covered.get(doc_index, ())) / len(query_terms)
-        scores[doc_index] = total_score * coverage ** 1.5
+        scores[doc_index] = total_score * coverage**1.5
 
     ranked = sorted(scores.items(), key=lambda kv: -kv[1])[:limit]
     results = [{"doc": index.docs[i], "score": s} for i, s in ranked]
     return results, sorted(set(matched))
 
 
-def locate(index: Index, record, query_terms, max_hits: int = 3,
-           max_buckets: int = 1, start_bucket: int = 0):
+def locate(
+    index: Index,
+    record,
+    query_terms,
+    max_hits: int = 3,
+    max_buckets: int = 1,
+    start_bucket: int = 0,
+):
     """Find which units of a document contain the query terms.
 
     Ranking never needs this - it runs only for the results actually on screen,
@@ -202,11 +215,13 @@ def locate(index: Index, record, query_terms, max_hits: int = 3,
             overlap = wanted & set(tokens.tokenize(unit))
             if not overlap:
                 continue
-            hits.append({
-                "unit": payload["from"] + offset,
-                "terms": sorted(overlap),
-                "snippet": snippet(unit, overlap),
-            })
+            hits.append(
+                {
+                    "unit": payload["from"] + offset,
+                    "terms": sorted(overlap),
+                    "snippet": snippet(unit, overlap),
+                }
+            )
             if len(hits) >= max_hits:
                 return hits, last >= record["buckets"]
 
@@ -225,7 +240,7 @@ def snippet(text: str, terms) -> str:
         position = 0
 
     start = max(0, position - SNIPPET_CHARS // 3)
-    excerpt = text[start:start + SNIPPET_CHARS].replace("\n", " ")
+    excerpt = text[start : start + SNIPPET_CHARS].replace("\n", " ")
     excerpt = re.sub(r"\s+", " ", excerpt).strip()
     return ("..." if start > 0 else "") + excerpt + "..."
 
@@ -234,11 +249,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("query", nargs="+")
     parser.add_argument("--limit", type=int, default=8)
-    parser.add_argument("--deep", type=int, default=0, metavar="N",
-                        help="scan up to N text buckets per result for snippets "
-                             "(default 1; large books span many)")
-    parser.add_argument("--explain", action="store_true",
-                        help="show scores, matched terms and bytes fetched")
+    parser.add_argument(
+        "--deep",
+        type=int,
+        default=0,
+        metavar="N",
+        help="scan up to N text buckets per result for snippets "
+        "(default 1; large books span many)",
+    )
+    parser.add_argument(
+        "--explain",
+        action="store_true",
+        help="show scores, matched terms and bytes fetched",
+    )
     args = parser.parse_args()
 
     if not (SEARCH_DIR / "meta.json").exists():
@@ -275,14 +298,17 @@ def main() -> int:
         if doc.get("keywords"):
             print(f"   keywords: {', '.join(doc['keywords'][:6])}")
 
-        hits, complete = locate(index, doc, query_terms,
-                                max_buckets=args.deep if args.deep else 1)
+        hits, complete = locate(
+            index, doc, query_terms, max_buckets=args.deep if args.deep else 1
+        )
         for hit in hits:
             print(f"   -> {doc['unit']} {hit['unit'] + 1}: {hit['snippet'][:150]}")
         if not hits and not complete:
             remaining = doc["buckets"] - 1
-            print(f"   -> matches deeper in the document "
-                  f"({remaining} more section(s); --deep {doc['buckets']} to scan)")
+            print(
+                f"   -> matches deeper in the document "
+                f"({remaining} more section(s); --deep {doc['buckets']} to scan)"
+            )
         print()
 
     if args.explain:

@@ -37,10 +37,10 @@ class Extracted:
     """The text of one document, split into addressable units."""
 
     units: list = field(default_factory=list)  # text per page/slide/chunk
-    unit_name: str = "page"                    # what a unit is called in the UI
-    real_pages: int = 0                        # native page count, 0 if n/a
-    title: str = ""                            # embedded title, if any
-    error: str = ""                            # why extraction failed, if it did
+    unit_name: str = "page"  # what a unit is called in the UI
+    real_pages: int = 0  # native page count, 0 if n/a
+    title: str = ""  # embedded title, if any
+    error: str = ""  # why extraction failed, if it did
 
     @property
     def has_text(self) -> bool:
@@ -54,6 +54,7 @@ class Extracted:
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _clean(text: str) -> str:
     """Collapse whitespace so that extracted text stays compact on disk."""
@@ -79,8 +80,9 @@ def _xml_text(xml: str, tag: str, break_tag: str = "") -> str:
     # A bare `[^>]*` would also match siblings that merely share a prefix -
     # <a:tab/>, <a:tableStyles>, <w:tbl>, <w:tc> - and the scan would then run
     # to the next real closing tag, dragging raw markup into the text.
-    text_pattern = (r"<" + re.escape(tag) + r"(?:\s[^>]*)?>(.*?)</"
-                    + re.escape(tag) + r">")
+    text_pattern = (
+        r"<" + re.escape(tag) + r"(?:\s[^>]*)?>(.*?)</" + re.escape(tag) + r">"
+    )
     if break_tag:
         pattern = text_pattern + r"|</" + re.escape(break_tag) + r">"
     else:
@@ -118,6 +120,7 @@ def _chunk(text: str, size: int = CHUNK_CHARS) -> list:
 # Per-format extractors
 # ---------------------------------------------------------------------------
 
+
 def _extract_pdf(path: Path) -> Extracted:
     import pypdfium2 as pdfium
 
@@ -140,8 +143,9 @@ def _extract_pdf(path: Path) -> Extracted:
         except Exception:
             pass
 
-        return Extracted(units=units, unit_name="page",
-                         real_pages=len(units), title=_clean(title))
+        return Extracted(
+            units=units, unit_name="page", real_pages=len(units), title=_clean(title)
+        )
     except Exception as exc:
         return Extracted(error=f"{type(exc).__name__}: {exc}")
     finally:
@@ -155,10 +159,17 @@ def _extract_pdf(path: Path) -> Extracted:
 def _extract_pptx(path: Path) -> Extracted:
     try:
         with zipfile.ZipFile(path) as archive:
-            slides = [name for name in archive.namelist()
-                      if re.fullmatch(r"ppt/slides/slide\d+\.xml", name)]
+            slides = [
+                name
+                for name in archive.namelist()
+                if re.fullmatch(r"ppt/slides/slide\d+\.xml", name)
+            ]
             # Zip order is arbitrary; slide numbers are what the reader sees.
-            slides.sort(key=lambda name: int(re.search(r"(\d+)", name.rsplit("/", 1)[1]).group(1)))
+            slides.sort(
+                key=lambda name: int(
+                    re.search(r"(\d+)", name.rsplit("/", 1)[1]).group(1)
+                )
+            )
 
             units = []
             for name in slides:
@@ -172,8 +183,9 @@ def _extract_pptx(path: Path) -> Extracted:
                 core = archive.read("docProps/core.xml").decode("utf-8", "replace")
                 title = _xml_text(core, "dc:title")
 
-            return Extracted(units=units, unit_name="slide",
-                             real_pages=len(units), title=title)
+            return Extracted(
+                units=units, unit_name="slide", real_pages=len(units), title=title
+            )
     except Exception as exc:
         return Extracted(error=f"{type(exc).__name__}: {exc}")
 

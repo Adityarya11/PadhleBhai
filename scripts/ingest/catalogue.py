@@ -17,7 +17,10 @@ CATEGORY_RULES = [
     ("book", {"books", "book"}),
     ("paper", {"research", "papers", "paper"}),
     ("lab", {"lab", "labs", "practical", "practicals"}),
-    ("assignment", {"assign", "assignment", "assignments", "tut", "tute", "tutorial", "ass"}),
+    (
+        "assignment",
+        {"assign", "assignment", "assignments", "tut", "tute", "tutorial", "ass"},
+    ),
     ("lecture", {"lecture", "lectures", "slides", "slide"}),
     ("notes", {"notes", "note"}),
     ("material", {"material", "materials"}),
@@ -88,8 +91,13 @@ def make_record(rel: str, path, extracted, lfs_paths=frozenset()) -> dict:
     title = (extracted.title or "").strip()
     # Producers leave junk in the Title field - "PowerPoint Presentation",
     # "Microsoft Word - foo.doc" - which is worse than the filename.
-    if (not title or len(title) < 4 or title.lower().startswith(
-            ("powerpoint present", "microsoft word", "untitled", "slide "))):
+    if (
+        not title
+        or len(title) < 4
+        or title.lower().startswith(
+            ("powerpoint present", "microsoft word", "untitled", "slide ")
+        )
+    ):
         title = title_from_name(name)
 
     return {
@@ -107,7 +115,7 @@ def make_record(rel: str, path, extracted, lfs_paths=frozenset()) -> dict:
         "pages": extracted.real_pages,
         "text": bool(extracted.has_text),
         "lfs": rel in lfs_paths,
-        "keywords": [],          # filled in once corpus-wide IDF is known
+        "keywords": [],  # filled in once corpus-wide IDF is known
     }
 
 
@@ -129,7 +137,7 @@ def add_keywords(records, doc_terms, doc_freq, total_docs, limit=8):
         scored = []
         for term, count in counts.items():
             if term.isdigit():
-                continue          # page numbers and years are not topics
+                continue  # page numbers and years are not topics
             tf = count / longest
             idf = math.log((total_docs + 1) / (doc_freq.get(term, 0) + 1))
             scored.append((tf * idf, term))

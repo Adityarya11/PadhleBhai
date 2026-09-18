@@ -24,7 +24,9 @@ from pathlib import Path
 
 import config
 
-BLOCK_START = "# >>> managed by scripts/guard.py - edit PRIVATE in scripts/config.py >>>"
+BLOCK_START = (
+    "# >>> managed by scripts/guard.py - edit PRIVATE in scripts/config.py >>>"
+)
 BLOCK_END = "# <<< managed by scripts/guard.py <<<"
 
 
@@ -37,8 +39,12 @@ def git(*args, check: bool = False) -> subprocess.CompletedProcess:
     """
     return subprocess.run(
         ["git", "-c", "core.quotepath=off", *args],
-        capture_output=True, text=True, encoding="utf-8", errors="surrogateescape",
-        cwd=config.ROOT, check=check,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="surrogateescape",
+        cwd=config.ROOT,
+        check=check,
     )
 
 
@@ -58,6 +64,7 @@ def lfs_files() -> set:
 # ---------------------------------------------------------------------------
 # 1. .gitignore managed block
 # ---------------------------------------------------------------------------
+
 
 def gitignore_lines() -> list:
     """Translate config.PRIVATE patterns into .gitignore rules."""
@@ -89,7 +96,11 @@ def split_gitignore(text: str):
 
 
 def render_gitignore() -> str:
-    text = config.GITIGNORE_FILE.read_text(encoding="utf-8") if config.GITIGNORE_FILE.exists() else ""
+    text = (
+        config.GITIGNORE_FILE.read_text(encoding="utf-8")
+        if config.GITIGNORE_FILE.exists()
+        else ""
+    )
     before, after = split_gitignore(text)
     block = "\n".join([BLOCK_START, *gitignore_lines(), BLOCK_END])
     parts = [p for p in (before, block, after.rstrip("\n")) if p]
@@ -98,7 +109,11 @@ def render_gitignore() -> str:
 
 def check_gitignore(fix: bool) -> list:
     wanted = render_gitignore()
-    current = config.GITIGNORE_FILE.read_text(encoding="utf-8") if config.GITIGNORE_FILE.exists() else ""
+    current = (
+        config.GITIGNORE_FILE.read_text(encoding="utf-8")
+        if config.GITIGNORE_FILE.exists()
+        else ""
+    )
     if current == wanted:
         return []
     if fix:
@@ -111,6 +126,7 @@ def check_gitignore(fix: bool) -> list:
 # ---------------------------------------------------------------------------
 # 2-5. Repository state
 # ---------------------------------------------------------------------------
+
 
 def check_private_tracked(files: list, fix: bool) -> list:
     offenders = [f for f in files if config.is_private(f)]
@@ -163,7 +179,7 @@ def check_index() -> list:
     search_dir = config.ROOT / "search"
     manifest_file = search_dir / "manifest.json"
     if not manifest_file.exists():
-        return []           # no index built yet; not an error
+        return []  # no index built yet; not an error
 
     try:
         records = json.loads(manifest_file.read_text(encoding="utf-8"))
@@ -178,7 +194,7 @@ def check_index() -> list:
             if config.is_private(path) or config.is_unlisted(path):
                 issues.append(f"guarded path present in the search index: {path}")
     if issues:
-        return issues       # a leak outranks staleness; fix it first
+        return issues  # a leak outranks staleness; fix it first
 
     from ingest import corpus
 
@@ -191,11 +207,15 @@ def check_index() -> list:
     missing = sorted(current - indexed)
     extra = sorted(indexed - current)
     if missing:
-        issues.append(f"{len(missing)} file(s) not in the search index "
-                      f"(e.g. {missing[0]}) - run scripts/build_index.py")
+        issues.append(
+            f"{len(missing)} file(s) not in the search index "
+            f"(e.g. {missing[0]}) - run scripts/build_index.py"
+        )
     if extra:
-        issues.append(f"{len(extra)} indexed file(s) no longer publishable "
-                      f"(e.g. {extra[0]}) - run scripts/build_index.py")
+        issues.append(
+            f"{len(extra)} indexed file(s) no longer publishable "
+            f"(e.g. {extra[0]}) - run scripts/build_index.py"
+        )
     return issues
 
 
@@ -216,10 +236,12 @@ def check_empty_dirs() -> list:
 # Entry point
 # ---------------------------------------------------------------------------
 
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--fix", action="store_true",
-                        help="apply the fixes that can be applied safely")
+    parser.add_argument(
+        "--fix", action="store_true", help="apply the fixes that can be applied safely"
+    )
     args = parser.parse_args()
 
     print(f"Guarding {config.ROOT}")

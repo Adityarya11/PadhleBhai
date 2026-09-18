@@ -35,13 +35,18 @@ def main() -> int:
     for number, (label, args) in enumerate(STEPS, 1):
         print(f"\n[{number}/{len(STEPS)}] {label}")
         print("-" * 60)
-        result = subprocess.run([sys.executable, str(HERE / args[0])] + args[1:],
-                                cwd=HERE.parent)
+        result = subprocess.run(
+            [sys.executable, str(HERE / args[0])] + args[1:], cwd=HERE.parent
+        )
         if result.returncode != 0:
-            print(f"\n{label} failed (exit {result.returncode}). Nothing further was run.")
+            print(
+                f"\n{label} failed (exit {result.returncode}). Nothing further was run."
+            )
             if args[0] == "guard.py":
-                print("Fix the issues above, or run `python scripts/guard.py --fix`\n"
-                      "for the ones it can handle itself, then re-run this script.")
+                print(
+                    "Fix the issues above, or run `python scripts/guard.py --fix`\n"
+                    "for the ones it can handle itself, then re-run this script."
+                )
             return result.returncode
 
     print("\n" + "=" * 60)
