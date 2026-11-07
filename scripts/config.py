@@ -68,12 +68,15 @@ INFRA_FILES = {
     "index.html",
     "trex.html",
     "README.md",
+    "knowledge.md",
     "LICENSE",
     ".gitignore",
     ".gitattributes",
     ".nojekyll",
     ".DS_Store",
     "idea.local.md",
+    "pyproject.toml",
+    "uv.lock",
 }
 
 # ---------------------------------------------------------------------------
