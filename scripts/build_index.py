@@ -11,7 +11,6 @@ snippets. Guarded material is excluded at the walk, not filtered out later.
 """
 
 import argparse
-import shutil
 import sys
 import time
 from pathlib import Path
@@ -19,7 +18,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import config
-from ingest import catalogue, corpus, tokens
+from ingest import catalogue, corpus
 from ingest import index as index_mod
 
 OUT_DIR = config.ROOT / "search"

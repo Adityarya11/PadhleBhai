@@ -27,7 +27,6 @@ so as-you-type completion needs no extra structure.
 
 import hashlib
 import json
-import math
 from collections import Counter, defaultdict
 
 import config
@@ -113,7 +112,7 @@ def find_duplicates(files, extracted) -> dict:
         if len(group) < 2:
             continue
         # Sorted order is arbitrary but stable, so rebuilds stay diff-clean.
-        primary = sorted(group)[0]
+        primary = min(group)
         for rel in group:
             canonical[rel] = primary
     return canonical

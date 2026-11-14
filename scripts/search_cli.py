@@ -236,8 +236,7 @@ def snippet(text: str, terms) -> str:
         found = lowered.find(term)
         if found >= 0 and (position < 0 or found < position):
             position = found
-    if position < 0:
-        position = 0
+    position = max(position, 0)
 
     start = max(0, position - SNIPPET_CHARS // 3)
     excerpt = text[start : start + SNIPPET_CHARS].replace("\n", " ")

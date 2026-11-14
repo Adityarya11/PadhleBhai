@@ -6,4 +6,5 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "pypdfium2>=5.14.0",
+    "ruff>=0.17.5",
 ]
