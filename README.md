@@ -27,7 +27,7 @@ python scripts/normalize_filenames.py    # spaces -> underscores
 python scripts/build_index.py            # extract text, rebuild search/
 python scripts/generate_site.py          # rebuild index.html
 python scripts/guard.py                  # verify nothing private leaks
-git add -A && git commit -m "add <course> material" && git push
+git add -A
 ```
 
 `build_index.py` caches extraction in `.index-cache/`, so a rebuild after adding
